@@ -72,6 +72,25 @@ add(['د', 'ديال', 'dyal', 'dial', 'd', 'dl', 'de', 'du', 'des', 'of', 'the'
 
 for (const id of UNIT_IDS) add(UNITS[id].aliases, { kind: 'unit', unit: id })
 
+/* Multi-word unit names ("ريال سعودي", "dollar canadien") win over single words, so they never clash with the Moroccan rial/franc. */
+const PHRASES = new Map<string, Token>()
+const MAX_PHRASE = 3
+
+function phraseWord(w: string): string {
+  return /[؀-ۿ]/.test(w) ? w.replace(/^(?:و|ب|ل)?(?:ال)?/, '') : w
+}
+for (const id of UNIT_IDS)
+  for (const p of UNITS[id].phrases ?? []) PHRASES.set(normalize(p).split(/\s+/).map(phraseWord).join(' '), { kind: 'unit', unit: id })
+
+/** Longest multi-word unit name starting at `words[i]`. */
+export function lookupPhrase(words: string[], i: number): { token: Token; len: number } | undefined {
+  for (let len = Math.min(MAX_PHRASE, words.length - i); len >= 2; len--) {
+    const hit = PHRASES.get(words.slice(i, i + len).map(phraseWord).join(' '))
+    if (hit) return { token: hit, len }
+  }
+  return undefined
+}
+
 const AR_PREFIXES = ['وبال', 'وال', 'بال', 'دال', 'ودال', 'وب', 'ول', 'ال', 'و', 'ب', 'د', 'ل']
 const LATIN_PREFIXES = ['wdl', 'bdl', 'dl', 'w', 'b', 'l', 'd']
 

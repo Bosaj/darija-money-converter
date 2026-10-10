@@ -1,5 +1,5 @@
 import { normalize } from './normalize'
-import { hasAndPrefix, lookup, type Token } from './lexicon'
+import { hasAndPrefix, lookup, lookupPhrase, type Token } from './lexicon'
 import type { UnitId } from './conventions'
 
 export interface Segment {
@@ -12,6 +12,8 @@ export interface Segment {
 export interface ParseResult {
   segments: Segment[]
   unknown: string[]
+  /** Quantity from "3 x 15 dh" / "500 ريال × 4"; segment amounts already include it. */
+  multiplier: number
 }
 
 type Tok = (Token | { kind: 'lit'; value: number }) & { raw: string }
@@ -29,11 +31,20 @@ function tokenize(text: string): { toks: Tok[]; unknown: string[] } {
   let s = normalize(text)
   s = s.replace(/د\.\s?م\.?/g, ' درهم ') // "100 د.م." abbreviation
   s = s.replace(/(\d)[\s  ](?=\d{3}(?!\d))/g, '$1') // "50 000" → "50000"
+  const words = s
+    .split(/[\s!?؟;:()"'«»\-–—/|*]+/)
+    .map((w) => w.replace(/^[.,]+|[.,]+$/g, ''))
+    .filter(Boolean)
   const toks: Tok[] = []
   const unknown: string[] = []
-  for (let raw of s.split(/[\s!?؟;:()"'«»\-–—/|*]+/)) {
-    raw = raw.replace(/^[.,]+|[.,]+$/g, '')
-    if (!raw) continue
+  for (let i = 0; i < words.length; i++) {
+    const phrase = lookupPhrase(words, i)
+    if (phrase) {
+      toks.push({ ...phrase.token, raw: words.slice(i, i + phrase.len).join(' ') })
+      i += phrase.len - 1
+      continue
+    }
+    const raw = words[i]!
     const hit = lookup(raw)
     if (hit) {
       toks.push({ ...hit, raw })
@@ -43,6 +54,15 @@ function tokenize(text: string): { toks: Tok[]; unknown: string[] } {
     if (n !== null) {
       toks.push({ kind: 'lit', value: n, raw })
       continue
+    }
+    // "$20", "€50", "£10": symbol before the number
+    const sym = /^([$€£])(\d+(?:[.,]\d+)?)(k?)$/i.exec(raw)
+    if (sym) {
+      const value = toNumber(sym[2]!)
+      if (value !== null) {
+        toks.push({ ...(lookup(sym[1]!) as Token), raw: sym[1]! }, { kind: 'lit', value: sym[3] ? value * 1000 : value, raw })
+        continue
+      }
     }
     const glued = /^(\d+(?:[.,]\d+)?)(.+)$/.exec(raw)
     if (glued) {
@@ -63,6 +83,19 @@ function tokenize(text: string): { toks: Tok[]; unknown: string[] } {
   return { toks, unknown }
 }
 
+const QTY_BEFORE = /^\s*(\d+(?:[.,]\d+)?)\s*[x×*]\s*(?=\S)(.+)$/i
+const QTY_AFTER = /^(.+?\S)\s*[x×*]\s*(\d+(?:[.,]\d+)?)\s*$/i
+
+/** Split "3 x 15 dh" / "500 ريال × 4" into a quantity and the price phrase. */
+export function splitQuantity(text: string): { qty: number; rest: string } {
+  const t = normalize(text)
+  const before = QTY_BEFORE.exec(t)
+  if (before) return { qty: Number(before[1]!.replace(',', '.')), rest: before[2]! }
+  const after = QTY_AFTER.exec(t)
+  if (after && /\D/.test(after[1]!)) return { qty: Number(after[2]!.replace(',', '.')), rest: after[1]! }
+  return { qty: 1, rest: text }
+}
+
 function nextSignificant(toks: Tok[], i: number): Tok | undefined {
   for (let j = i + 1; j < toks.length; j++) {
     const t = toks[j]!
@@ -77,7 +110,9 @@ function nextSignificant(toks: Tok[], i: number): Tok | undefined {
  * `fallbackUnit` is used when the phrase names no unit.
  */
 export function parseAmount(text: string, fallbackUnit: UnitId = 'dirham'): ParseResult | null {
-  const { toks, unknown } = tokenize(text)
+  const { qty, rest } = splitQuantity(text)
+  const multiplier = qty > 0 && Number.isFinite(qty) ? qty : 1
+  const { toks, unknown } = tokenize(rest)
   const segments: Segment[] = []
 
   let total = 0
@@ -190,8 +225,9 @@ export function parseAmount(text: string, fallbackUnit: UnitId = 'dirham'): Pars
 
   if (segments.length === 0) return null
   return {
-    segments: segments.map(({ amount, unit, implied }) => ({ amount: round(amount), unit, implied })),
+    segments: segments.map(({ amount, unit, implied }) => ({ amount: round(amount * multiplier), unit, implied })),
     unknown,
+    multiplier,
   }
 }
 

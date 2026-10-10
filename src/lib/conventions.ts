@@ -1,7 +1,12 @@
 import raw from '../data/conventions.json'
+import type { MadRates } from './rates'
 
-export const UNIT_IDS = ['dirham', 'rial', 'santim', 'million', 'mlyar', 'doro'] as const
-export type UnitId = (typeof UNIT_IDS)[number]
+export const LOCAL_IDS = ['dirham', 'rial', 'santim', 'million', 'mlyar', 'doro'] as const
+export const FOREIGN_IDS = ['eur', 'usd', 'gbp', 'cad', 'chf', 'sar', 'aed'] as const
+export const UNIT_IDS = [...LOCAL_IDS, ...FOREIGN_IDS] as const
+export type LocalId = (typeof LOCAL_IDS)[number]
+export type ForeignId = (typeof FOREIGN_IDS)[number]
+export type UnitId = LocalId | ForeignId
 
 export type PresetId = 'general' | 'oriental' | 'north' | 'custom'
 export type Lang = 'ar' | 'fr' | 'en'
@@ -9,10 +14,13 @@ export type Lang = 'ar' | 'fr' | 'en'
 export interface UnitDef {
   factor: number | null
   verified: boolean
+  foreign?: boolean
+  code?: string
   symbol: string
   names: { ar: string; latin: string; fr: string; en: string }
   plural: { ar: string; latin: string }
   aliases: string[]
+  phrases?: string[] // multi-word names, e.g. "ريال سعودي"
   source: string
 }
 
@@ -46,11 +54,17 @@ export const DEFAULT_PRESET = raw.defaultPreset as Exclude<PresetId, 'custom'>
 /** Custom preset: user-entered factors layered on top of the general preset. */
 export type CustomFactors = Partial<Record<UnitId, number | null>>
 
-export function resolveUnits(preset: PresetId, custom: CustomFactors = {}): ResolvedUnits {
+export const isForeign = (id: UnitId): id is ForeignId => (FOREIGN_IDS as readonly string[]).includes(id)
+
+export function resolveUnits(preset: PresetId, custom: CustomFactors = {}, rates?: MadRates): ResolvedUnits {
   const base = preset === 'custom' ? PRESETS[DEFAULT_PRESET] : PRESETS[preset]
   const out = {} as ResolvedUnits
   for (const id of UNIT_IDS) {
     const def = UNITS[id]
+    if (isForeign(id)) {
+      out[id] = { id, factor: rates?.[id] ?? null, verified: true, def }
+      continue
+    }
     const override = base.overrides[id]
     let factor = override ? override.factor : def.factor
     let verified = override?.verified ?? def.verified
