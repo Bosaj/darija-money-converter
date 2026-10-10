@@ -1,0 +1,78 @@
+{
+  "$comment": "Dirham value of ONE unit of each slang term. Edit here, not in code. Any value with verified=false must be confirmed with locals before it is presented as fact (the UI flags it).",
+  "version": 1,
+  "units": {
+    "dirham": {
+      "factor": 1,
+      "verified": true,
+      "symbol": "DH",
+      "names": { "ar": "درهم", "latin": "derham", "fr": "dirham", "en": "dirham" },
+      "plural": { "ar": "دراهم", "latin": "drahem" },
+      "aliases": ["درهم", "دراهم", "درهام", "dh", "dhs", "mad", "dirham", "dirhams", "derham", "drahem", "drham", "dirhem"],
+      "source": "Official currency of Morocco (MAD)."
+    },
+    "rial": {
+      "factor": 0.05,
+      "verified": true,
+      "symbol": "ريال",
+      "names": { "ar": "ريال", "latin": "ryal", "fr": "rial", "en": "rial" },
+      "plural": { "ar": "ريال", "latin": "ryal" },
+      "aliases": ["ريال", "ريالات", "ريالة", "rial", "rials", "riyal", "riyals", "ryal", "ryals", "real", "reyal", "ryalat"],
+      "source": "Informal unit of account, 1/20 dirham (Wikipedia: Moroccan dirham, units of account)."
+    },
+    "santim": {
+      "factor": 0.01,
+      "verified": true,
+      "symbol": "c",
+      "names": { "ar": "سنتيم", "latin": "santim", "fr": "centime", "en": "centime" },
+      "plural": { "ar": "سنتيم", "latin": "santim" },
+      "aliases": ["سنتيم", "سانتيم", "سنتيمات", "فرنك", "فرنكات", "فرنكة", "centime", "centimes", "santim", "santime", "santimat", "frank", "franc", "francs", "fr", "frs"],
+      "source": "Official 1/100 subdivision; 'franc' is the informal name (Wikipedia: Moroccan dirham)."
+    },
+    "million": {
+      "factor": 10000,
+      "verified": true,
+      "symbol": "M",
+      "names": { "ar": "مليون", "latin": "melyoun", "fr": "million (de centimes)", "en": "million (centimes)" },
+      "plural": { "ar": "مليون", "latin": "melyoun" },
+      "aliases": [],
+      "source": "Large prices are quoted in millions of santim: 1 million santim = 10,000 DH."
+    },
+    "mlyar": {
+      "factor": 10000000,
+      "verified": true,
+      "symbol": "Md",
+      "names": { "ar": "مليار", "latin": "mlyar", "fr": "milliard (de centimes)", "en": "billion (centimes)" },
+      "plural": { "ar": "مليار", "latin": "mlyar" },
+      "aliases": [],
+      "source": "1 milliard santim = 10,000,000 DH."
+    },
+    "doro": {
+      "factor": null,
+      "verified": false,
+      "symbol": "دورو",
+      "names": { "ar": "دورو", "latin": "douro", "fr": "douro", "en": "doro" },
+      "plural": { "ar": "دورو", "latin": "douro" },
+      "aliases": ["دورو", "دوروات", "douro", "douros", "doro", "duro", "dourou", "dooro"],
+      "source": "Region-dependent and not verified. Set per region preset; please report your city's value."
+    }
+  },
+  "defaultPreset": "general",
+  "presets": {
+    "general": {
+      "names": { "ar": "عموم المغرب", "fr": "Maroc (général)", "en": "Most of Morocco" },
+      "cities": { "ar": "الدار البيضاء، الرباط، مراكش، فاس…", "fr": "Casablanca, Rabat, Marrakech, Fès…", "en": "Casablanca, Rabat, Marrakech, Fès…" },
+      "overrides": {}
+    },
+    "oriental": {
+      "names": { "ar": "الجهة الشرقية", "fr": "Oriental", "en": "Oriental region" },
+      "cities": { "ar": "وجدة، بركان، الناظور", "fr": "Oujda, Berkane, Nador", "en": "Oujda, Berkane, Nador" },
+      "overrides": { "doro": { "factor": 0.05, "verified": false, "note": "Community-reported: douro = 5 santim (same as rial), like the Algerian douro. Needs local confirmation." } }
+    },
+    "north": {
+      "names": { "ar": "الشمال", "fr": "Nord", "en": "North" },
+      "cities": { "ar": "طنجة، تطوان، الشاون", "fr": "Tanger, Tétouan, Chefchaouen", "en": "Tangier, Tetouan, Chefchaouen" },
+      "overrides": { "doro": { "factor": 0.5, "verified": false, "note": "Reported as 0.5 DH in some regions (Spanish duro legacy). Needs local confirmation." } }
+    }
+  }
+}
