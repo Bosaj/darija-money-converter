@@ -8,3 +8,8 @@ build/
 .DS_Store
 .vite/
 coverage/
+
+# local-only Streamlit prototype (superseded by the React PWA)
+.prototype-streamlit/
+.claude/
+*.tsbuildinfo

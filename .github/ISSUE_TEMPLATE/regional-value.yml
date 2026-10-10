@@ -1,0 +1,42 @@
+name: Regional value
+description: Tell us what a money word is worth in your city (e.g. "doro" in Oujda)
+title: "Regional value: <unit> in <city>"
+labels: [data, regional-value]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Money slang changes by region, and every unverified value in the app comes from community reports.
+        Thanks for helping make it accurate. Values live in `src/data/conventions.json`.
+  - type: dropdown
+    id: unit
+    attributes:
+      label: Unit
+      options: [doro / douro (دورو), rial (ريال), santim / franc (سنتيم / فرنك), million (مليون), other]
+    validations:
+      required: true
+  - type: input
+    id: city
+    attributes:
+      label: City / region
+      placeholder: Oujda
+    validations:
+      required: true
+  - type: input
+    id: value
+    attributes:
+      label: What is ONE unit worth in dirhams?
+      placeholder: "0.05"
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example sentence
+      description: How would a seller say a price with it? (Arabic or Latin script)
+      placeholder: "عشرين دورو = درهم"
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: How sure are you?
+      options: [I grew up there / use it daily, I have heard it often, Not sure]
