@@ -37,6 +37,7 @@ In Morocco people quote prices in **rial**, **santim/franc** or **millions** —
 | **Understands Darija** | Arabic script, Latin "Arabizi" (`3chrin`, `jouj`, `khamsmya`), French, digits (`50 000`, `1.250`, `٥٠`), mixed units (`عشرين درهم و خمسين سنتيم`), halves and quarters (`مليون ونص`, `مليون وربع`). |
 | **Moroccan conventions built in** | A bare `مليون` means a million *santim* (10,000 DH); `عشرين درهم و خمسين` means 20.50 DH; with no unit it uses your chosen default (rial by default). |
 | **Every unit at once** | Dirham, rial, santim, million, milliard, doro — tap to copy. |
+| **Franc** | `500 فرنك` = 5 DH: the franc is the old name of the santim (1 DH = 100 francs since 1960). A switch in the region dialog makes it a whole dirham instead, for people who use it that way (flagged as unconfirmed). |
 | **Say it like a local** | Reverse conversion spelled the way a seller says it, in Arabic and Arabizi, with text-to-speech: 50 DH → "ألف ريال" / "alf ryal". |
 | **Regional presets** | General, Oriental (Oujda…), North (Tangier, Tetouan…) and a custom preset. Unverified values are flagged, with a one-click "correct this value" issue form. |
 | **Voice input** | Dictate the price (Web Speech API, `ar-MA`), parsed by the same Darija engine. |
@@ -81,6 +82,8 @@ https://darija-money-converter.vercel.app/api/rates?symbols=EUR,USD&days=30
 https://darija-money-converter.vercel.app/api/convert?q=جوج د المليون&unit=rial&region=general
 ```
 
+Optional `franc=dirham` makes "franc" a whole dirham (default `santim`, 1/100 DH).
+
 The response contains `segments` (what was understood), `dirham`, `values` (every unit, foreign ones included) and `sayIt` (how a local says the amount, in Arabic and Arabizi). `422` means no amount was found.
 
 ## Exchange rates
@@ -94,7 +97,9 @@ All ratios live in [`src/data/conventions.json`](src/data/conventions.json) — 
 | Unit | Dirham value | Status |
 |---|---|---|
 | ريال rial | 0.05 (1 DH = 20 rial) | verified ([Wikipedia](https://en.wikipedia.org/wiki/Moroccan_dirham)) |
-| سنتيم / فرنك santim, franc | 0.01 (1 DH = 100 santim) | verified |
+| سنتيم santim | 0.01 (1 DH = 100 santim) | verified |
+| فرنك franc | 0.01, the santim's old name (1960–1974: 1 DH = 100 francs) | verified ([Wikipedia](https://en.wikipedia.org/wiki/Moroccan_dirham)) |
+| فرنك franc — "franc = dirham" switch | 1 | **unverified**, reported for French usage ([Remitly](https://www.remitly.com/blog/currencies/moroccan-dirham-facts-exchange-guide/), [Journey Beyond Travel](https://www.journeybeyondtravel.com/blog/currency.html)) |
 | مليون million (of santim) | 10,000 | verified |
 | مليار milliard (of santim) | 10,000,000 | verified |
 | دورو doro — Oriental preset | 0.05 | **unverified**, community-reported |
@@ -145,6 +150,7 @@ Requires Node 20+ (CI uses Node 24).
 - [x] v0.4 — polished PWA, shareable price cards — [#4](https://github.com/Bosaj/darija-money-converter/issues/4)
 - [x] v0.5 — euro/dollar & foreign currencies, coin logo, souk kit, calculator — [#6](https://github.com/Bosaj/darija-money-converter/issues/6)–[#11](https://github.com/Bosaj/darija-money-converter/issues/11)
 - [x] v0.6 — live rates API with trends, Moroccan-star coin, Darija voice in/out, place detection — [#13](https://github.com/Bosaj/darija-money-converter/issues/13)–[#16](https://github.com/Bosaj/darija-money-converter/issues/16)
+- [x] v0.7 — franc as its own unit with a franc = dirham switch, wrapped example chips, a Moroccan-money page background — [#18](https://github.com/Bosaj/darija-money-converter/issues/18)–[#20](https://github.com/Bosaj/darija-money-converter/issues/20)
 - [ ] Next — confirm doro (and any other local terms) city by city; a server speech model for Firefox, which has no Web Speech API.
 
 ---
