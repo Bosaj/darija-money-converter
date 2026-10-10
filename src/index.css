@@ -183,6 +183,39 @@ li {
   }
 }
 
+/* coin logo */
+.coin-wrap {
+  perspective: 500px;
+}
+.coin-flip {
+  animation: coin-flip 950ms cubic-bezier(0.3, 0.7, 0.25, 1) both;
+  transform-style: preserve-3d;
+}
+@keyframes coin-flip {
+  0% {
+    transform: rotateY(0) translateY(0);
+  }
+  45% {
+    transform: rotateY(400deg) translateY(-6px);
+  }
+  100% {
+    transform: rotateY(720deg) translateY(0);
+  }
+}
+.coin-sweep {
+  animation: coin-sweep 5s ease-in-out infinite;
+}
+@keyframes coin-sweep {
+  0%,
+  55% {
+    transform: translateX(0);
+  }
+  85%,
+  100% {
+    transform: translateX(980px);
+  }
+}
+
 dialog::backdrop {
   background: rgb(10 15 13 / 0.45);
   backdrop-filter: blur(4px);

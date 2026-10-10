@@ -1,40 +1,115 @@
 {
-  "$comment": "Dirham value of ONE unit of each slang term. Edit here, not in code. Any value with verified=false must be confirmed with locals before it is presented as fact (the UI flags it).",
+  "$comment": "Dirham value of ONE unit of each slang term. Edit here, not in code. Any value with verified=false must be confirmed with locals before it is presented as fact (the UI flags it). Foreign units (foreign=true) get their factor from live exchange rates at runtime.",
   "version": 1,
   "units": {
     "dirham": {
       "factor": 1,
       "verified": true,
       "symbol": "DH",
-      "names": { "ar": "درهم", "latin": "derham", "fr": "dirham", "en": "dirham" },
-      "plural": { "ar": "دراهم", "latin": "drahem" },
-      "aliases": ["درهم", "دراهم", "درهام", "dh", "dhs", "mad", "dirham", "dirhams", "derham", "drahem", "drham", "dirhem"],
+      "names": {
+        "ar": "درهم",
+        "latin": "derham",
+        "fr": "dirham",
+        "en": "dirham"
+      },
+      "plural": {
+        "ar": "دراهم",
+        "latin": "drahem"
+      },
+      "aliases": [
+        "درهم",
+        "دراهم",
+        "درهام",
+        "dh",
+        "dhs",
+        "mad",
+        "dirham",
+        "dirhams",
+        "derham",
+        "drahem",
+        "drham",
+        "dirhem"
+      ],
       "source": "Official currency of Morocco (MAD)."
     },
     "rial": {
       "factor": 0.05,
       "verified": true,
       "symbol": "ريال",
-      "names": { "ar": "ريال", "latin": "ryal", "fr": "rial", "en": "rial" },
-      "plural": { "ar": "ريال", "latin": "ryal" },
-      "aliases": ["ريال", "ريالات", "ريالة", "rial", "rials", "riyal", "riyals", "ryal", "ryals", "real", "reyal", "ryalat"],
+      "names": {
+        "ar": "ريال",
+        "latin": "ryal",
+        "fr": "rial",
+        "en": "rial"
+      },
+      "plural": {
+        "ar": "ريال",
+        "latin": "ryal"
+      },
+      "aliases": [
+        "ريال",
+        "ريالات",
+        "ريالة",
+        "rial",
+        "rials",
+        "riyal",
+        "riyals",
+        "ryal",
+        "ryals",
+        "real",
+        "reyal",
+        "ryalat"
+      ],
       "source": "Informal unit of account, 1/20 dirham (Wikipedia: Moroccan dirham, units of account)."
     },
     "santim": {
       "factor": 0.01,
       "verified": true,
       "symbol": "c",
-      "names": { "ar": "سنتيم", "latin": "santim", "fr": "centime", "en": "centime" },
-      "plural": { "ar": "سنتيم", "latin": "santim" },
-      "aliases": ["سنتيم", "سانتيم", "سنتيمات", "فرنك", "فرنكات", "فرنكة", "centime", "centimes", "santim", "santime", "santimat", "frank", "franc", "francs", "fr", "frs"],
+      "names": {
+        "ar": "سنتيم",
+        "latin": "santim",
+        "fr": "centime",
+        "en": "centime"
+      },
+      "plural": {
+        "ar": "سنتيم",
+        "latin": "santim"
+      },
+      "aliases": [
+        "سنتيم",
+        "سانتيم",
+        "سنتيمات",
+        "فرنك",
+        "فرنكات",
+        "فرنكة",
+        "centime",
+        "centimes",
+        "santim",
+        "santime",
+        "santimat",
+        "frank",
+        "franc",
+        "francs",
+        "fr",
+        "frs"
+      ],
       "source": "Official 1/100 subdivision; 'franc' is the informal name (Wikipedia: Moroccan dirham)."
     },
     "million": {
       "factor": 10000,
       "verified": true,
       "symbol": "M",
-      "names": { "ar": "مليون", "latin": "melyoun", "fr": "million (de centimes)", "en": "million (centimes)" },
-      "plural": { "ar": "مليون", "latin": "melyoun" },
+      "names": {
+        "ar": "مليون",
+        "latin": "melyoun",
+        "fr": "million (de centimes)",
+        "en": "million (centimes)"
+      },
+      "plural": {
+        "ar": "مليون",
+        "latin": "melyoun"
+      },
       "aliases": [],
       "source": "Large prices are quoted in millions of santim: 1 million santim = 10,000 DH."
     },
@@ -42,8 +117,16 @@
       "factor": 10000000,
       "verified": true,
       "symbol": "Md",
-      "names": { "ar": "مليار", "latin": "mlyar", "fr": "milliard (de centimes)", "en": "billion (centimes)" },
-      "plural": { "ar": "مليار", "latin": "mlyar" },
+      "names": {
+        "ar": "مليار",
+        "latin": "mlyar",
+        "fr": "milliard (de centimes)",
+        "en": "billion (centimes)"
+      },
+      "plural": {
+        "ar": "مليار",
+        "latin": "mlyar"
+      },
       "aliases": [],
       "source": "1 milliard santim = 10,000,000 DH."
     },
@@ -51,28 +134,292 @@
       "factor": null,
       "verified": false,
       "symbol": "دورو",
-      "names": { "ar": "دورو", "latin": "douro", "fr": "douro", "en": "doro" },
-      "plural": { "ar": "دورو", "latin": "douro" },
-      "aliases": ["دورو", "دوروات", "douro", "douros", "doro", "duro", "dourou", "dooro"],
+      "names": {
+        "ar": "دورو",
+        "latin": "douro",
+        "fr": "douro",
+        "en": "doro"
+      },
+      "plural": {
+        "ar": "دورو",
+        "latin": "douro"
+      },
+      "aliases": [
+        "دورو",
+        "دوروات",
+        "douro",
+        "douros",
+        "doro",
+        "duro",
+        "dourou",
+        "dooro"
+      ],
       "source": "Region-dependent and not verified. Set per region preset; please report your city's value."
+    },
+    "eur": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "EUR",
+      "symbol": "€",
+      "names": {
+        "ar": "أورو",
+        "latin": "euro",
+        "fr": "euro",
+        "en": "euro"
+      },
+      "plural": {
+        "ar": "أورو",
+        "latin": "euro"
+      },
+      "aliases": [
+        "أورو",
+        "اورو",
+        "يورو",
+        "أوروات",
+        "اوروات",
+        "الأورو",
+        "euro",
+        "euros",
+        "eur",
+        "€",
+        "oro",
+        "ouro"
+      ],
+      "phrases": [],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "usd": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "USD",
+      "symbol": "$",
+      "names": {
+        "ar": "دولار",
+        "latin": "dollar",
+        "fr": "dollar US",
+        "en": "US dollar"
+      },
+      "plural": {
+        "ar": "دولار",
+        "latin": "dollar"
+      },
+      "aliases": [
+        "دولار",
+        "دولارات",
+        "dollar",
+        "dollars",
+        "usd",
+        "$",
+        "dolar",
+        "doular"
+      ],
+      "phrases": [
+        "دولار امريكي",
+        "us dollar",
+        "dollar americain",
+        "american dollar"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "gbp": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "GBP",
+      "symbol": "£",
+      "names": {
+        "ar": "باوند",
+        "latin": "pound",
+        "fr": "livre sterling",
+        "en": "British pound"
+      },
+      "plural": {
+        "ar": "باوند",
+        "latin": "pound"
+      },
+      "aliases": [
+        "باوند",
+        "جنيه",
+        "pound",
+        "pounds",
+        "gbp",
+        "£",
+        "sterling"
+      ],
+      "phrases": [
+        "جنيه استرليني",
+        "livre sterling",
+        "british pound"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "cad": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "CAD",
+      "symbol": "C$",
+      "names": {
+        "ar": "دولار كندي",
+        "latin": "dollar canadien",
+        "fr": "dollar canadien",
+        "en": "Canadian dollar"
+      },
+      "plural": {
+        "ar": "دولار كندي",
+        "latin": "dollar canadien"
+      },
+      "aliases": [
+        "cad"
+      ],
+      "phrases": [
+        "دولار كندي",
+        "dollar canadien",
+        "canadian dollar",
+        "dollars canadiens",
+        "canadian dollars"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "chf": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "CHF",
+      "symbol": "CHF",
+      "names": {
+        "ar": "فرنك سويسري",
+        "latin": "franc suisse",
+        "fr": "franc suisse",
+        "en": "Swiss franc"
+      },
+      "plural": {
+        "ar": "فرنك سويسري",
+        "latin": "franc suisse"
+      },
+      "aliases": [
+        "chf"
+      ],
+      "phrases": [
+        "فرنك سويسري",
+        "franc suisse",
+        "swiss franc",
+        "francs suisses",
+        "swiss francs"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "sar": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "SAR",
+      "symbol": "SAR",
+      "names": {
+        "ar": "ريال سعودي",
+        "latin": "riyal saoudi",
+        "fr": "riyal saoudien",
+        "en": "Saudi riyal"
+      },
+      "plural": {
+        "ar": "ريال سعودي",
+        "latin": "riyal saoudi"
+      },
+      "aliases": [
+        "sar"
+      ],
+      "phrases": [
+        "ريال سعودي",
+        "riyal saoudien",
+        "saudi riyal",
+        "riyals saoudiens",
+        "saudi riyals"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
+    },
+    "aed": {
+      "factor": null,
+      "verified": true,
+      "foreign": true,
+      "code": "AED",
+      "symbol": "AED",
+      "names": {
+        "ar": "درهم إماراتي",
+        "latin": "dirham emarati",
+        "fr": "dirham émirati",
+        "en": "UAE dirham"
+      },
+      "plural": {
+        "ar": "درهم إماراتي",
+        "latin": "dirham emarati"
+      },
+      "aliases": [
+        "aed"
+      ],
+      "phrases": [
+        "درهم إماراتي",
+        "درهم اماراتي",
+        "dirham emirati",
+        "uae dirham",
+        "dirhams emiratis"
+      ],
+      "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
     }
   },
   "defaultPreset": "general",
   "presets": {
     "general": {
-      "names": { "ar": "عموم المغرب", "fr": "Maroc (général)", "en": "Most of Morocco" },
-      "cities": { "ar": "الدار البيضاء، الرباط، مراكش، فاس…", "fr": "Casablanca, Rabat, Marrakech, Fès…", "en": "Casablanca, Rabat, Marrakech, Fès…" },
+      "names": {
+        "ar": "عموم المغرب",
+        "fr": "Maroc (général)",
+        "en": "Most of Morocco"
+      },
+      "cities": {
+        "ar": "الدار البيضاء، الرباط، مراكش، فاس…",
+        "fr": "Casablanca, Rabat, Marrakech, Fès…",
+        "en": "Casablanca, Rabat, Marrakech, Fès…"
+      },
       "overrides": {}
     },
     "oriental": {
-      "names": { "ar": "الجهة الشرقية", "fr": "Oriental", "en": "Oriental region" },
-      "cities": { "ar": "وجدة، بركان، الناظور", "fr": "Oujda, Berkane, Nador", "en": "Oujda, Berkane, Nador" },
-      "overrides": { "doro": { "factor": 0.05, "verified": false, "note": "Community-reported: douro = 5 santim (same as rial), like the Algerian douro. Needs local confirmation." } }
+      "names": {
+        "ar": "الجهة الشرقية",
+        "fr": "Oriental",
+        "en": "Oriental region"
+      },
+      "cities": {
+        "ar": "وجدة، بركان، الناظور",
+        "fr": "Oujda, Berkane, Nador",
+        "en": "Oujda, Berkane, Nador"
+      },
+      "overrides": {
+        "doro": {
+          "factor": 0.05,
+          "verified": false,
+          "note": "Community-reported: douro = 5 santim (same as rial), like the Algerian douro. Needs local confirmation."
+        }
+      }
     },
     "north": {
-      "names": { "ar": "الشمال", "fr": "Nord", "en": "North" },
-      "cities": { "ar": "طنجة، تطوان، الشاون", "fr": "Tanger, Tétouan, Chefchaouen", "en": "Tangier, Tetouan, Chefchaouen" },
-      "overrides": { "doro": { "factor": 0.5, "verified": false, "note": "Reported as 0.5 DH in some regions (Spanish duro legacy). Needs local confirmation." } }
+      "names": {
+        "ar": "الشمال",
+        "fr": "Nord",
+        "en": "North"
+      },
+      "cities": {
+        "ar": "طنجة، تطوان، الشاون",
+        "fr": "Tanger, Tétouan, Chefchaouen",
+        "en": "Tangier, Tetouan, Chefchaouen"
+      },
+      "overrides": {
+        "doro": {
+          "factor": 0.5,
+          "verified": false,
+          "note": "Reported as 0.5 DH in some regions (Spanish duro legacy). Needs local confirmation."
+        }
+      }
     }
   }
 }
