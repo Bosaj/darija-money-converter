@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /** State persisted to localStorage. Storage can be unavailable (private mode) — never throws. */
 export function useStored<T>(key: string, initial: T): [T, (v: T | ((prev: T) => T)) => void] {
@@ -58,69 +58,4 @@ export function useInstallPrompt(): (() => Promise<void>) | null {
   }
 }
 
-/* ---- Web Speech API (not in lib.dom for every browser) ---- */
-interface SpeechRecognitionLike {
-  lang: string
-  interimResults: boolean
-  maxAlternatives: number
-  start: () => void
-  stop: () => void
-  onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }> }) => void) | null
-  onend: (() => void) | null
-  onerror: (() => void) | null
-}
-
-type RecognitionCtor = new () => SpeechRecognitionLike
-
-function getRecognition(): RecognitionCtor | null {
-  if (typeof window === 'undefined') return null
-  const w = window as unknown as { SpeechRecognition?: RecognitionCtor; webkitSpeechRecognition?: RecognitionCtor }
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null
-}
-
-/** Dictation in Moroccan Arabic (falls back to the browser's Arabic model). */
-export function useDictation(onText: (text: string) => void) {
-  const ctor = getRecognition()
-  const [listening, setListening] = useState(false)
-  const rec = useRef<SpeechRecognitionLike | null>(null)
-  const callback = useRef(onText)
-  callback.current = onText
-
-  const stop = useCallback(() => rec.current?.stop(), [])
-  const start = useCallback(
-    (lang: string) => {
-      if (!ctor) return
-      const r = new ctor()
-      r.lang = lang
-      r.interimResults = true
-      r.maxAlternatives = 1
-      r.onresult = (e) => {
-        let text = ''
-        for (let i = 0; i < e.results.length; i++) text += e.results[i]![0]!.transcript
-        callback.current(text)
-      }
-      r.onend = () => setListening(false)
-      r.onerror = () => setListening(false)
-      rec.current = r
-      setListening(true)
-      r.start()
-    },
-    [ctor],
-  )
-  return { supported: Boolean(ctor), listening, start, stop }
-}
-
-/** Read text aloud with the best available Arabic / French / English voice. */
-export function speak(text: string, lang: string) {
-  if (typeof speechSynthesis === 'undefined') return
-  speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = lang
-  const voices = speechSynthesis.getVoices()
-  const base = lang.split('-')[0]!
-  u.voice = voices.find((v) => v.lang === lang) ?? voices.find((v) => v.lang.startsWith(base)) ?? null
-  u.rate = 0.95
-  speechSynthesis.speak(u)
-}
-
-export const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window
+export * from './voice'

@@ -31,6 +31,7 @@ function tokenize(text: string): { toks: Tok[]; unknown: string[] } {
   let s = normalize(text)
   s = s.replace(/د\.\s?م\.?/g, ' درهم ') // "100 د.م." abbreviation
   s = s.replace(/(\d)[\s  ](?=\d{3}(?!\d))/g, '$1') // "50 000" → "50000"
+  s = s.replace(/quatre[\s-]+vingts?/g, ' 80 ') // French 80
   const words = s
     .split(/[\s!?؟;:()"'«»\-–—/|*]+/)
     .map((w) => w.replace(/^[.,]+|[.,]+$/g, ''))
