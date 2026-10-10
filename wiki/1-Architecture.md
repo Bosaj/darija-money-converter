@@ -26,6 +26,10 @@ Client-side only: a React + Vite PWA. No backend, no analytics.
 | `lib/shareCard.ts` | 1080×1350 price card |
 | `lib/rates.ts` | Live MAD exchange rates, device cache, dated snapshot |
 | `lib/souk.ts` | Haggle offers, cash breakdown, cheat sheet, quiz |
+| `lib/place.ts` | Offline nearest-city / country detection |
+| `hooks/voice.ts` | Speech-to-text and text-to-speech |
+| `api/rates.ts` | Public rates API: latest + daily change + 30-day history |
+| `api/convert.ts` | Public Darija conversion API |
 
 ## Quality
-91 Vitest tests, including a spell → parse round trip in both scripts. CI runs type-check, tests and build on every PR.
+120 Vitest tests, including a spell → parse round trip in both scripts. CI runs type-check, tests and build on every PR.

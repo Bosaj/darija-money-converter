@@ -28,7 +28,8 @@
         "derham",
         "drahem",
         "drham",
-        "dirhem"
+        "dirhem",
+        "درهما"
       ],
       "source": "Official currency of Morocco (MAD)."
     },
@@ -58,7 +59,8 @@
         "ryals",
         "real",
         "reyal",
-        "ryalat"
+        "ryalat",
+        "ريالا"
       ],
       "source": "Informal unit of account, 1/20 dirham (Wikipedia: Moroccan dirham, units of account)."
     },
@@ -92,7 +94,8 @@
         "franc",
         "francs",
         "fr",
-        "frs"
+        "frs",
+        "سنتيما"
       ],
       "source": "Official 1/100 subdivision; 'franc' is the informal name (Wikipedia: Moroccan dirham)."
     },
@@ -184,7 +187,8 @@
         "eur",
         "€",
         "oro",
-        "ouro"
+        "ouro",
+        "يوروهات"
       ],
       "phrases": [],
       "source": "Live mid-market rate (ExchangeRate-API open access), cached on device; dated snapshot when offline."
@@ -213,7 +217,8 @@
         "usd",
         "$",
         "dolar",
-        "doular"
+        "doular",
+        "دولارا"
       ],
       "phrases": [
         "دولار امريكي",

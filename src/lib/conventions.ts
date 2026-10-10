@@ -1,5 +1,5 @@
-import raw from '../data/conventions.json'
-import type { MadRates } from './rates'
+import raw from '../data/conventions.json' with { type: 'json' }
+import type { MadRates } from './rates.js'
 
 export const LOCAL_IDS = ['dirham', 'rial', 'santim', 'million', 'mlyar', 'doro'] as const
 export const FOREIGN_IDS = ['eur', 'usd', 'gbp', 'cad', 'chf', 'sar', 'aed'] as const

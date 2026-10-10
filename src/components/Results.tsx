@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AlertTriangle, ArrowLeftRight, Coins, Globe2, Loader2, MapPin, Share2, Volume2, MessageCircle } from 'lucide-react'
+import { AlertTriangle, ArrowDownRight, ArrowLeftRight, ArrowUpRight, Coins, Globe2, Loader2, MapPin, Minus, Share2, Volume2, MessageCircle } from 'lucide-react'
 import type { Lang, PresetId, ResolvedUnits, UnitId } from '../lib/conventions'
 import { FOREIGN_IDS, LOCAL_IDS, type ForeignId } from '../lib/conventions'
 import type { RateState } from '../lib/rates'
@@ -54,9 +54,10 @@ interface HeroProps {
   t: Strings
   onShare: () => Promise<void>
   foreignNote?: boolean
+  onRead?: () => void
 }
 
-export function ResultHero({ dirham, lang, t, onShare, foreignNote }: HeroProps) {
+export function ResultHero({ dirham, lang, t, onShare, foreignNote, onRead }: HeroProps) {
   const [sharing, setSharing] = useState(false)
   const text = dirham === null ? '—' : fmtDirham(dirham, lang)
   return (
@@ -71,6 +72,11 @@ export function ResultHero({ dirham, lang, t, onShare, foreignNote }: HeroProps)
           </p>
         </div>
         <div className="flex shrink-0 gap-1.5">
+          {canSpeak && onRead && (
+            <IconButton label={t.readResult} disabled={dirham === null} onClick={onRead} className="!bg-white/15 !text-brand-ink hover:!bg-white/25 disabled:opacity-50">
+              <Volume2 size={18} />
+            </IconButton>
+          )}
           <CopyButton text={dirham === null ? '' : `${text} DH`} label={t.copy} copiedLabel={t.copied} className="!bg-white/15 !text-brand-ink hover:!bg-white/25" />
           <IconButton
             label={sharing ? t.sharing : t.share}
@@ -114,7 +120,7 @@ export function SayIt({ phrases, units, lang, t }: { phrases: Phrase[]; units: R
             </div>
             <div className="flex shrink-0 gap-0.5">
               {canSpeak && (
-                <IconButton label={t.speak} onClick={() => speak(p.ar, 'ar-MA')}>
+                <IconButton label={t.speak} onClick={() => speak(p.ar)}>
                   <Volume2 size={18} />
                 </IconButton>
               )}
@@ -217,6 +223,41 @@ interface ForeignProps {
   t: Strings
 }
 
+/** Single-series 30-day line: hue = accent, thin 2px stroke, last point marked; exact numbers in the title. */
+function Sparkline({ points, label }: { points: (number | null)[]; label: string }) {
+  const known = points.map((v, i) => [i, v] as const).filter((p): p is readonly [number, number] => p[1] !== null)
+  if (known.length < 2) return null
+  const W = 84
+  const H = 26
+  const vals = known.map((p) => p[1])
+  const min = Math.min(...vals)
+  const max = Math.max(...vals)
+  const span = max - min || 1
+  const x = (i: number) => (i / (points.length - 1)) * (W - 4) + 2
+  const y = (v: number) => H - 3 - ((v - min) / span) * (H - 6)
+  const d = known.map(([i, v], k) => `${k ? 'L' : 'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')
+  const [li, lv] = known[known.length - 1]!
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label={label} className="shrink-0 overflow-visible">
+      <title>{label}</title>
+      <path d={d} fill="none" stroke="var(--accent)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <circle cx={x(li)} cy={y(lv)} r={3} fill="var(--accent)" stroke="var(--surface-2)" strokeWidth={2} />
+    </svg>
+  )
+}
+
+function Change({ value, t }: { value: number | null | undefined; t: Strings }) {
+  if (value === null || value === undefined) return null
+  const Icon = value > 0.005 ? ArrowUpRight : value < -0.005 ? ArrowDownRight : Minus
+  return (
+    <span className="tabular inline-flex items-center gap-0.5 text-[11.5px] font-semibold text-ink-2" title={t.vsYesterday}>
+      <Icon size={13} />
+      {value > 0 ? '+' : ''}
+      {value.toFixed(2)}%
+    </span>
+  )
+}
+
 export function ForeignCurrencies({ values, units, rates, shown, onToggle, lang, t }: ForeignProps) {
   const status =
     rates.source === 'live'
@@ -226,7 +267,22 @@ export function ForeignCurrencies({ values, units, rates, shown, onToggle, lang,
         : t.rateSnapshot(new Date(rates.updated).toLocaleDateString(lang === 'ar' ? 'ar-MA' : lang, { day: 'numeric', month: 'short', year: 'numeric' }))
   return (
     <Card>
-      <CardTitle icon={<Globe2 size={18} />} title={t.foreign} hint={status} />
+      <CardTitle
+        icon={<Globe2 size={18} />}
+        title={t.foreign}
+        hint={status}
+        action={
+          rates.source === 'live' ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-2.5 py-1 text-[11.5px] font-semibold text-brand">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-60" />
+                <span className="relative inline-flex size-2 rounded-full bg-brand" />
+              </span>
+              {t.live}
+            </span>
+          ) : undefined
+        }
+      />
       <div className="grid grid-cols-2 gap-2.5">
         {shown.map((id) => {
           const u = units[id]
@@ -243,6 +299,12 @@ export function ForeignCurrencies({ values, units, rates, shown, onToggle, lang,
                 <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent-soft text-[13px] font-bold text-accent">{u.def.symbol.length <= 2 ? u.def.symbol : u.def.code?.slice(0, 1)}</span>
               </div>
               <p className="tabular mt-2 truncate text-[20px] font-semibold text-ink">{v === null ? '—' : fmt(v, lang)}</p>
+              <div className="mt-1 flex items-center justify-between gap-2">
+                <Change value={rates.change?.[id]} t={t} />
+                {rates.history?.series[id] && (
+                  <Sparkline points={rates.history.series[id]!} label={`${t.last30}: 1 ${u.def.code} = ${(rates.history.series[id]!.filter((x) => x !== null) as number[]).map((x) => x.toFixed(2)).join(', ')} DH`} />
+                )}
+              </div>
             </div>
           )
         })}
@@ -270,6 +332,10 @@ export function ForeignCurrencies({ values, units, rates, shown, onToggle, lang,
         {t.rateNote}{' '}
         <a href="https://www.exchangerate-api.com" target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-ink">
           {t.ratesBy}
+        </a>{' '}
+        ·{' '}
+        <a href="/api/rates" target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-ink">
+          {t.publicApi}
         </a>
       </p>
     </Card>
