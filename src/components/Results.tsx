@@ -63,15 +63,15 @@ export function ResultHero({ dirham, lang, t, onShare, foreignNote, onRead }: He
   return (
     <div className="relative overflow-hidden rounded-[24px] bg-brand p-5 text-brand-ink sm:p-6">
       <div className="zellige !opacity-[0.12]" style={{ color: 'var(--brand-ink)' }} aria-hidden />
-      <div className="relative flex items-end justify-between gap-4">
-        <div className="min-w-0">
+      <div className="relative flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+        <div className="max-w-full">
           <p className="text-[13px] font-medium opacity-80">{t.inDirham}</p>
           <p key={text} className={`pop tabular mt-1 whitespace-nowrap font-semibold leading-[1.05] tracking-tight ${text.length > 10 ? 'text-[28px] sm:text-[44px]' : text.length > 7 ? 'text-[34px] sm:text-[50px]' : 'text-[40px] sm:text-[56px]'}`} aria-live="polite">
             {text}
             <span className="ms-2 text-[18px] font-medium opacity-80 sm:text-[24px]">{lang === 'ar' ? 'درهم' : 'DH'}</span>
           </p>
         </div>
-        <div className="flex shrink-0 gap-1.5">
+        <div className="ms-auto flex shrink-0 gap-1.5">
           {canSpeak && onRead && (
             <IconButton label={t.readResult} disabled={dirham === null} onClick={onRead} className="!bg-white/15 !text-brand-ink hover:!bg-white/25 disabled:opacity-50">
               <Volume2 size={18} />
@@ -159,8 +159,9 @@ export function Equivalents({ values, units, lang, t, presetLabel, onOpenRegion 
         }
       />
       <div className="grid grid-cols-2 gap-2.5">
-        {LOCAL_IDS.map((id) => {
+        {LOCAL_IDS.filter((id) => id !== 'franc').map((id) => {
           const u = units[id]
+          const alsoFranc = (id === 'santim' || id === 'dirham') && units.franc.factor === u.factor
           const v = values?.[id] ?? null
           const unavailable = u.factor === null
           return (
@@ -168,7 +169,10 @@ export function Equivalents({ values, units, lang, t, presetLabel, onOpenRegion 
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate text-[13.5px] font-semibold text-ink">{unitName(u, lang)}</p>
-                  <p className="truncate text-[11.5px] text-ink-3">{unitAltName(u, lang)}</p>
+                  <p className="truncate text-[11.5px] text-ink-3">
+                    {unitAltName(u, lang)}
+                    {alsoFranc && <span title={t.francHint}> · {lang === 'ar' ? 'frank' : 'فرنك'}</span>}
+                  </p>
                 </div>
                 {!unavailable && !u.verified && (
                   <a href={reportUrl(u.def.names.en, presetLabel)} target="_blank" rel="noreferrer" title={t.unverifiedHint} className="shrink-0">

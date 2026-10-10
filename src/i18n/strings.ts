@@ -29,6 +29,11 @@ const ar = {
   regionTitle: 'اختار الجهة ديالك',
   regionHint: 'الريال والسنتيم ثابتين فكل المغرب. "الدورو" كيتبدل من جهة لجهة.',
   custom: 'قيم شخصية',
+  francTitle: 'الفرنك شحال؟',
+  francSantim: 'فرنك = سنتيم',
+  francDirham: 'فرنك = درهم',
+  francHint: 'الفرنك هو السمية القديمة ديال السنتيم: من 1960 حتى 1974 كان الدرهم = 100 فرنك، وبزاف ديال الناس باقين كيحسبو بيه.',
+  francReported: 'شي ناس كيقولو "فرنك" للدرهم كامل (بالفرنسية). ماشي مؤكد.',
   customHint: 'دخل شحال كيسوى كل وحدة بالدرهم فمدينتك.',
   unverified: 'خاصها تأكيد',
   unverifiedHint: 'هاد القيمة ماشي مؤكدة. واش كتعرف القيمة فمدينتك؟',
@@ -133,6 +138,11 @@ const fr: Strings = {
   regionTitle: 'Choisissez votre région',
   regionHint: 'Le rial et le centime sont fixes partout au Maroc. Le « douro » varie selon la région.',
   custom: 'Valeurs perso',
+  francTitle: 'Le franc vaut combien ?',
+  francSantim: 'franc = centime',
+  francDirham: 'franc = dirham',
+  francHint: 'Le franc est l’ancien nom du centime : de 1960 à 1974, 1 dirham = 100 francs, et beaucoup comptent encore en francs.',
+  francReported: 'Certains francophones disent « franc » pour un dirham entier. Non confirmé.',
   customHint: 'Indiquez la valeur en dirhams d’une unité dans votre ville.',
   unverified: 'à confirmer',
   unverifiedHint: 'Valeur non confirmée. Vous connaissez la valeur dans votre ville ?',
@@ -235,6 +245,11 @@ const en: Strings = {
   regionTitle: 'Pick your region',
   regionHint: 'Rial and centime are the same everywhere in Morocco. “Doro” changes by region.',
   custom: 'Custom values',
+  francTitle: 'What is a franc?',
+  francSantim: 'franc = centime',
+  francDirham: 'franc = dirham',
+  francHint: 'Franc is the old name of the santim: from 1960 to 1974 one dirham was 100 francs, and many people still count in francs.',
+  francReported: 'Some French speakers say “franc” for a whole dirham. Not confirmed.',
   customHint: 'Enter what one unit is worth in dirhams in your city.',
   unverified: 'unverified',
   unverifiedHint: 'This value is not confirmed. Know the value in your city?',
@@ -310,6 +325,6 @@ const en: Strings = {
 
 export const STRINGS: Record<Lang, Strings> = { ar, fr, en }
 
-export const EXAMPLES = ['عشرين ألف ريال', 'جوج د المليون', '100 euro', 'ميتين ريال', '3 x 15 dh', '3chrin alf ryal', 'مليون ونص', '$50']
+export const EXAMPLES = ['عشرين ألف ريال', 'جوج د المليون', '100 euro', 'ميتين ريال', '500 فرنك', '3 x 15 dh', '3chrin alf ryal', 'مليون ونص', '$50']
 
 export const NUMBER_LOCALE: Record<Lang, string> = { ar: 'ar-MA-u-nu-latn', fr: 'fr-FR', en: 'en-US' }

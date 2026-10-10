@@ -82,22 +82,43 @@
         "سنتيم",
         "سانتيم",
         "سنتيمات",
-        "فرنك",
-        "فرنكات",
-        "فرنكة",
         "centime",
         "centimes",
         "santim",
         "santime",
         "santimat",
+        "سنتيما"
+      ],
+      "source": "Official 1/100 subdivision of the dirham (Wikipedia: Moroccan dirham)."
+    },
+    "franc": {
+      "factor": 0.01,
+      "verified": true,
+      "symbol": "فرنك",
+      "names": {
+        "ar": "فرنك",
+        "latin": "frank",
+        "fr": "franc",
+        "en": "franc"
+      },
+      "plural": {
+        "ar": "فرنك",
+        "latin": "frank"
+      },
+      "aliases": [
+        "فرنك",
+        "فرنكات",
+        "فرنكة",
+        "فرنكا",
         "frank",
         "franc",
         "francs",
         "fr",
         "frs",
-        "سنتيما"
+        "frenk",
+        "fernk"
       ],
-      "source": "Official 1/100 subdivision; 'franc' is the informal name (Wikipedia: Moroccan dirham)."
+      "source": "Old name of the santim, 1/100 DH. The dirham replaced the Moroccan franc in 1960 at 100 francs = 1 DH and francs stayed the subdivision until the centime (santim) took over in 1974, so many people still count in francs (Wikipedia: Moroccan dirham). Some French speakers say 'franc' for a whole dirham (reported by remitly.com and journeybeyondtravel.com, not verified); switch it in Region settings."
     },
     "million": {
       "factor": 10000,
