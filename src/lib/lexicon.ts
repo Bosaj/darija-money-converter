@@ -13,41 +13,41 @@ export type Token =
 
 const NUMBERS: Record<number, string[]> = {
   0: ['صفر', 'zero', 'sifr', 'zéro'],
-  1: ['واحد', 'وحده', 'وحد', 'wahed', 'wa7ed', 'wahd', 'wa7d', 'un', 'une', 'one'],
-  2: ['جوج', 'زوج', 'joj', 'jouj', 'zouj', 'zoj', 'deux', 'two'],
+  1: ['واحد', 'وحده', 'وحد', 'احد', 'احدى', 'واحده', 'wahed', 'wa7ed', 'wahd', 'wa7d', 'un', 'une', 'one'],
+  2: ['جوج', 'زوج', 'اثنان', 'اثنين', 'اثنتان', 'اثنتين', 'اثنا', 'اثنتا', 'joj', 'jouj', 'zouj', 'zoj', 'deux', 'two'],
   3: ['تلاته', 'تلات', 'تلت', 'ثلاثه', 'ثلاث', 'tlata', 'tlat', 'tlt', 'tlta', 'trois', 'three'],
-  4: ['ربعه', 'اربعه', 'reb3a', 'rb3a', 'rab3a', 'rebaa', 'quatre', 'four'],
+  4: ['ربعه', 'اربعه', 'اربع', 'reb3a', 'rb3a', 'rab3a', 'rebaa', 'quatre', 'four'],
   5: ['خمسه', 'خمس', 'khamsa', 'khmsa', 'khams', 'khms', 'khems', 'cinq', 'five'],
   6: ['سته', 'ست', 'setta', 'stta', 'sta', 'sett', 'six'],
   7: ['سبعه', 'سبع', 'seb3a', 'sb3a', 'seb3', 'sb3', 'sept', 'seven'],
-  8: ['تمنيه', 'تمن', 'ثمانيه', 'tmenya', 'tmnya', 'tmen', 'tmn', 'huit', 'eight'],
+  8: ['تمنيه', 'تمن', 'ثمانيه', 'ثماني', 'ثمان', 'tmenya', 'tmnya', 'tmen', 'tmn', 'huit', 'eight'],
   9: ['تسعود', 'تسعه', 'تسع', 'tes3oud', 'ts3oud', 'tes3a', 'ts3a', 'tes3', 'ts3', 'neuf', 'nine'],
   10: ['عشره', 'عشر', '3achra', '3chra', '3ashra', '3ashr', '3achr', 'dix', 'ten'],
   11: ['حضاش', 'حداش', 'حضاشر', '7dach', 'hdach', 'hdash', 'onze', 'eleven'],
   12: ['طناش', 'طناشر', 'tnach', 'tnash', 'douze', 'twelve'],
-  13: ['تلطاش', 'تلطاشر', 'teltach', 'tltach', 'treize'],
-  14: ['ربعطاش', 'ربعطاشر', 'reb3tach', 'rb3tach', 'quatorze'],
-  15: ['خمسطاش', 'خمسطاشر', 'khamstach', 'khmstach', 'quinze'],
-  16: ['سطاش', 'سطاشر', 'settach', 'sttach', 'stach', 'seize'],
-  17: ['سبعطاش', 'سبعطاشر', 'seb3tach', 'sb3tach'],
-  18: ['تمنطاش', 'تمنطاشر', 'tmentach', 'tmntach'],
-  19: ['تسعطاش', 'تسعطاشر', 'tes3tach', 'ts3tach'],
-  20: ['عشرين', '3echrin', '3chrin', '3ichrin', '3eshrin', '3achrin', 'vingt', 'twenty'],
-  30: ['تلاتين', 'ثلاثين', 'tlatin', 'tlatine', 'trente', 'thirty'],
-  40: ['ربعين', 'اربعين', 'reb3in', 'rb3in', 'quarante', 'forty'],
-  50: ['خمسين', 'khamsin', 'khmsin', 'cinquante', 'fifty'],
-  60: ['ستين', 'settin', 'sttin', 'stin', 'soixante', 'sixty'],
-  70: ['سبعين', 'seb3in', 'sb3in', 'seventy'],
-  80: ['تمانين', 'ثمانين', 'tmanin', 'eighty'],
-  90: ['تسعين', 'tes3in', 'ts3in', 'ninety'],
-  200: ['ميتين', 'ميتان', 'mitin', 'mitine', 'miatin', 'myatin'],
-  300: ['تلتميه', 'teltmya', 'tltmya', 'tlatmya'],
-  400: ['ربعميه', 'reb3mya', 'rb3mya'],
-  500: ['خمسميه', 'khamsmya', 'khmsmya', 'khemsmya'],
-  600: ['ستميه', 'settmya', 'sttmya', 'stmya'],
-  700: ['سبعميه', 'seb3mya', 'sb3mya'],
-  800: ['تمنميه', 'tmenmya', 'tmnmya'],
-  900: ['تسعميه', 'tes3mya', 'ts3mya'],
+  13: ['تلطاش', 'تلطاشر', 'teltach', 'tltach', 'treize', 'thirteen'],
+  14: ['ربعطاش', 'ربعطاشر', 'reb3tach', 'rb3tach', 'quatorze', 'fourteen'],
+  15: ['خمسطاش', 'خمسطاشر', 'khamstach', 'khmstach', 'quinze', 'fifteen'],
+  16: ['سطاش', 'سطاشر', 'settach', 'sttach', 'stach', 'seize', 'sixteen'],
+  17: ['سبعطاش', 'سبعطاشر', 'seb3tach', 'sb3tach', 'seventeen'],
+  18: ['تمنطاش', 'تمنطاشر', 'tmentach', 'tmntach', 'eighteen'],
+  19: ['تسعطاش', 'تسعطاشر', 'tes3tach', 'ts3tach', 'nineteen'],
+  20: ['عشرين', 'عشرون', '3echrin', '3chrin', '3ichrin', '3eshrin', '3achrin', 'vingt', 'twenty'],
+  30: ['تلاتين', 'ثلاثين', 'ثلاثون', 'tlatin', 'tlatine', 'trente', 'thirty'],
+  40: ['ربعين', 'اربعين', 'اربعون', 'reb3in', 'rb3in', 'quarante', 'forty'],
+  50: ['خمسين', 'خمسون', 'khamsin', 'khmsin', 'cinquante', 'fifty'],
+  60: ['ستين', 'ستون', 'settin', 'sttin', 'stin', 'soixante', 'sixty'],
+  70: ['سبعين', 'سبعون', 'seb3in', 'sb3in', 'seventy'],
+  80: ['تمانين', 'ثمانين', 'ثمانون', 'tmanin', 'eighty'],
+  90: ['تسعين', 'تسعون', 'tes3in', 'ts3in', 'ninety'],
+  200: ['ميتين', 'ميتان', 'مائتان', 'مائتين', 'مئتان', 'مئتين', 'deux cents', 'mitin', 'mitine', 'miatin', 'myatin'],
+  300: ['تلتميه', 'ثلاثمائه', 'ثلاثمئه', 'ثلثمائه', 'teltmya', 'tltmya', 'tlatmya'],
+  400: ['ربعميه', 'اربعمائه', 'اربعمئه', 'reb3mya', 'rb3mya'],
+  500: ['خمسميه', 'خمسمائه', 'خمسمئه', 'khamsmya', 'khmsmya', 'khemsmya'],
+  600: ['ستميه', 'ستمائه', 'ستمئه', 'settmya', 'sttmya', 'stmya'],
+  700: ['سبعميه', 'سبعمائه', 'سبعمئه', 'seb3mya', 'sb3mya'],
+  800: ['تمنميه', 'ثمانمائه', 'ثمانمئه', 'tmenmya', 'tmnmya'],
+  900: ['تسعميه', 'تسعمائه', 'تسعمئه', 'tes3mya', 'ts3mya'],
 }
 
 const LEXICON = new Map<string, Token>()
@@ -57,13 +57,13 @@ function add(words: string[], token: Token) {
 }
 
 for (const [value, words] of Object.entries(NUMBERS)) add(words, { kind: 'num', value: Number(value) })
-add(['ميه', 'مايه', 'مائه', 'مياه', 'mya', 'mia', 'miya', 'meya', 'cent', 'hundred'], { kind: 'hundred' })
-add(['الف', 'alf', 'mille', 'thousand'], { kind: 'mag', value: 1e3 })
+add(['ميه', 'مايه', 'مائه', 'مئه', 'مياه', 'mya', 'mia', 'miya', 'meya', 'cent', 'cents', 'hundred', 'hundreds'], { kind: 'hundred' })
+add(['الف', 'alf', 'mille', 'mil', 'thousand'], { kind: 'mag', value: 1e3 })
 add(['الاف', 'alaf', 'alaaf', 'thousands'], { kind: 'mag', value: 1e3, plural: true })
-add(['الفين', 'alfin', 'alfine', 'alfain'], { kind: 'mag', value: 1e3, count: 2 })
+add(['الفين', 'الفان', 'alfin', 'alfine', 'alfain'], { kind: 'mag', value: 1e3, count: 2 })
 add(['مليون', 'ملاين', 'ملايين', 'melyoun', 'mlyoun', 'melyon', 'mlyon', 'million', 'millions', 'melyun'], { kind: 'mag', value: 1e6, santimDefault: true })
-add(['مليونين', 'melyounin', 'mlyounin'], { kind: 'mag', value: 1e6, count: 2, santimDefault: true })
-add(['مليار', 'ملايير', 'mlyar', 'melyar', 'milliard', 'milliards', 'billion'], { kind: 'mag', value: 1e9, santimDefault: true })
+add(['مليونين', 'مليونان', 'melyounin', 'mlyounin'], { kind: 'mag', value: 1e6, count: 2, santimDefault: true })
+add(['مليار', 'ملايير', 'مليارات', 'mlyar', 'melyar', 'milliard', 'milliards', 'billion', 'billions'], { kind: 'mag', value: 1e9, santimDefault: true })
 add(['مليارين', 'mlyarin'], { kind: 'mag', value: 1e9, count: 2, santimDefault: true })
 add(['نص', 'نصف', 'nss', 'nos', 'ness', 'nes', 'nous', 'demi', 'half'], { kind: 'half' })
 add(['ربع', 'reb3', 'rb3', 'rob3', 'quart', 'quarter'], { kind: 'quarter' })
