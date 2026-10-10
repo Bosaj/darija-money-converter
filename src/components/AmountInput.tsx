@@ -6,7 +6,7 @@ import { EXAMPLES } from '../i18n/strings'
 import { unitName } from '../lib/format'
 import { useDictation } from '../hooks'
 
-const CHIP_UNITS: UnitId[] = ['rial', 'dirham', 'santim', 'doro']
+const CHIP_UNITS: UnitId[] = ['rial', 'dirham', 'santim', 'doro', 'eur', 'usd']
 const SPEECH_LANG: Record<Lang, string> = { ar: 'ar-MA', fr: 'fr-FR', en: 'en-US' }
 
 interface Props {
