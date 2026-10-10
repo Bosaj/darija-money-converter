@@ -1,15 +1,70 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#14946f"/>
-      <stop offset="1" stop-color="#0b5e48"/>
+    <radialGradient id="brass" cx="38%" cy="32%" r="78%">
+      <stop offset="0" stop-color="#fff2b8"/>
+      <stop offset="0.28" stop-color="#f1cf62"/>
+      <stop offset="0.62" stop-color="#c9952a"/>
+      <stop offset="0.86" stop-color="#9a6a14"/>
+      <stop offset="1" stop-color="#d9b04a"/>
+    </radialGradient>
+    <linearGradient id="brassShine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.7" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#3a2504" stop-opacity="0.35"/>
+    </linearGradient>
+    <radialGradient id="nickel" cx="36%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.3" stop-color="#e6e9ed"/>
+      <stop offset="0.65" stop-color="#a9b1ba"/>
+      <stop offset="0.9" stop-color="#7c858f"/>
+      <stop offset="1" stop-color="#c9ced4"/>
+    </radialGradient>
+    <linearGradient id="starFace" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f6f8"/>
+      <stop offset="0.5" stop-color="#b9c0c8"/>
+      <stop offset="1" stop-color="#8a939d"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="128" fill="url(#g)"/>
-  <g fill="#f2b847">
-    <rect x="136" y="136" width="240" height="240" rx="18"/>
-    <rect x="136" y="136" width="240" height="240" rx="18" transform="rotate(45 256 256)"/>
+
+  <!-- cast shadow -->
+  <ellipse cx="262" cy="270" rx="236" ry="236" fill="#000" opacity="0.22"/>
+
+  <!-- brass ring with reeded edge -->
+  <circle cx="256" cy="256" r="240" fill="url(#brass)"/>
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#7a520e" stroke-width="9" stroke-dasharray="3 5" opacity="0.55"/>
+  <circle cx="256" cy="256" r="240" fill="url(#brassShine)"/>
+  <circle cx="256" cy="256" r="222" fill="none" stroke="#fff4c9" stroke-width="3" opacity="0.75"/>
+  <circle cx="256" cy="256" r="218" fill="none" stroke="#8d6111" stroke-width="2.5" opacity="0.8"/>
+  <!-- beaded rim -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#a87a1e" stroke-width="9" stroke-linecap="round" stroke-dasharray="0.1 19.6" opacity="0.9"/>
+  <circle cx="254" cy="254" r="200" fill="none" stroke="#fff3c2" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.1 19.6" opacity="0.7"/>
+
+  <!-- nickel centre -->
+  <circle cx="256" cy="256" r="160" fill="#6f5010" opacity="0.55"/>
+  <circle cx="256" cy="256" r="154" fill="url(#nickel)"/>
+  <circle cx="256" cy="256" r="154" fill="none" stroke="#5f6770" stroke-width="3"/>
+  <circle cx="256" cy="256" r="146" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+
+  <!-- embossed 8-point zellige star: shadow, highlight, face -->
+  <g transform="translate(260 260)" fill="#3f464e" opacity="0.45">
+    <rect x="-82" y="-82" width="164" height="164" rx="10"/>
+    <rect x="-82" y="-82" width="164" height="164" rx="10" transform="rotate(45)"/>
   </g>
-  <circle cx="256" cy="256" r="70" fill="#0f7b5f"/>
-  <circle cx="256" cy="256" r="40" fill="none" stroke="#f2b847" stroke-width="16"/>
+  <g transform="translate(253 253)" fill="#ffffff" opacity="0.8">
+    <rect x="-82" y="-82" width="164" height="164" rx="10"/>
+    <rect x="-82" y="-82" width="164" height="164" rx="10" transform="rotate(45)"/>
+  </g>
+  <g transform="translate(256 256)" fill="url(#starFace)">
+    <rect x="-82" y="-82" width="164" height="164" rx="10"/>
+    <rect x="-82" y="-82" width="164" height="164" rx="10" transform="rotate(45)"/>
+  </g>
+  <!-- engraved centre -->
+  <circle cx="256" cy="256" r="46" fill="url(#brass)" stroke="#6f4b0c" stroke-width="3"/>
+  <circle cx="256" cy="256" r="46" fill="url(#brassShine)"/>
+  <circle cx="256" cy="256" r="24" fill="none" stroke="#7a520e" stroke-width="5" opacity="0.7"/>
+  <circle cx="254" cy="254" r="24" fill="none" stroke="#fff3c2" stroke-width="2" opacity="0.7"/>
+
+  <!-- gloss -->
+  <ellipse cx="190" cy="150" rx="120" ry="70" fill="#ffffff" opacity="0.14" transform="rotate(-30 190 150)"/>
 </svg>
