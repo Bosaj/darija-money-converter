@@ -4,6 +4,14 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-10
+### Added
+- The franc is its own unit: `500 فرنك` = 5 DH, with a "What is a franc?" switch in the region dialog (franc = centime by default, or franc = dirham, flagged as unconfirmed). The equivalents grid names the franc next to the santim, and `GET /api/convert` takes `franc=santim|dirham`. (#19)
+- A page background built from the app's subject: a faint zellige field, flag-green and coin-gold glows, and slowly drifting 10 DH coins, 20/50/100/200 DH note silhouettes and the words people say. It is decorative, still under reduced motion, and lighter on phones. (#20)
+
+### Fixed
+- Example chips wrap instead of being cut off at the screen edge, and the result card's buttons move below the amount instead of covering it on narrow phones. (#18)
+
 ## [0.6.0] - 2026-10-10
 ### Added
 - `GET /api/rates`: latest MAD rates merged with a 30-day history and the daily change, CDN-cached and CORS-open. `GET /api/convert`: the Darija parser as a JSON API. The app shows ▲/▼ change, 30-day sparklines and a live indicator, and refreshes every 15 minutes. (#13)
