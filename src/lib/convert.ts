@@ -1,6 +1,6 @@
-import { UNIT_IDS, type ResolvedUnits, type UnitId } from './conventions'
-import type { Segment } from './parse'
-import { spellCount, spellNumber } from './spell'
+import { UNIT_IDS, type ResolvedUnits, type UnitId } from './conventions.js'
+import type { Segment } from './parse.js'
+import { spellCount, spellNumber } from './spell.js'
 
 export interface Conversion {
   dirham: number | null

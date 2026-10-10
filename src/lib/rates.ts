@@ -1,4 +1,4 @@
-import type { ForeignId } from './conventions'
+import type { ForeignId } from './conventions.js'
 
 /** Dirham value of ONE unit of each foreign currency. */
 export type MadRates = Record<ForeignId, number>
