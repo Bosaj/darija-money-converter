@@ -194,8 +194,8 @@ export function AmountInput({ value, onChange, onCommit, defaultUnit, onDefaultU
         </div>
       </div>
 
-      <div className="-mx-5 mt-4 sm:-mx-6">
-        <div className="flex items-center gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:px-6">
+      <div className="mt-4">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="shrink-0 text-[12.5px] text-ink-3">{t.examples}</span>
           {EXAMPLES.map((ex) => (
             <button
@@ -206,7 +206,7 @@ export function AmountInput({ value, onChange, onCommit, defaultUnit, onDefaultU
                 onChange(ex)
                 setTimeout(onCommit, 0)
               }}
-              className="btn-press shrink-0 rounded-full border border-dashed border-line-strong px-3 py-1.5 text-[13px] text-ink-2 hover:border-brand hover:text-brand"
+              className="btn-press max-w-full truncate rounded-full border border-dashed border-line-strong px-3 py-1.5 text-[13px] text-ink-2 hover:border-brand hover:text-brand"
             >
               {ex}
             </button>
