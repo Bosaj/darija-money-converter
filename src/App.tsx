@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Download, MapPin, Moon, Sun, SunMoon, WifiOff } from 'lucide-react'
-import { DEFAULT_PRESET, PRESETS, resolveUnits, type CustomFactors, type Lang, type PresetId, type UnitId } from './lib/conventions'
+import { DEFAULT_PRESET, isForeign, PRESETS, resolveUnits, type CustomFactors, type ForeignId, type Lang, type PresetId, type UnitId } from './lib/conventions'
+import { fetchRates, initialRates, STALE_MS, type RateState } from './lib/rates'
 import { parseAmount } from './lib/parse'
 import { fromDirham, sayIt, toDirham } from './lib/convert'
 import { fmt, fmtDirham, REPO_URL, unitName } from './lib/format'
@@ -8,7 +9,9 @@ import { shareCard } from './lib/shareCard'
 import { STRINGS } from './i18n/strings'
 import { useInstallPrompt, useOnline, useStored } from './hooks'
 import { AmountInput } from './components/AmountInput'
-import { EmptyHint, Equivalents, Interpretation, Problem, ResultHero, SayIt } from './components/Results'
+import { EmptyHint, Equivalents, ForeignCurrencies, Interpretation, Problem, ResultHero, SayIt } from './components/Results'
+import { SoukKit } from './components/SoukKit'
+import { CoinLogo } from './components/CoinLogo'
 import { RegionDialog } from './components/RegionDialog'
 import { History, type HistoryEntry } from './components/History'
 import { Card, GithubMark, IconButton } from './components/ui'
@@ -45,6 +48,8 @@ export default function App() {
   const [history, setHistory] = useStored<HistoryEntry[]>('dmc:history', [])
   const [text, setText] = useState(initialText)
   const [regionOpen, setRegionOpen] = useState(false)
+  const [rates, setRates] = useState<RateState>(initialRates)
+  const [shownForeign, setShownForeign] = useStored<ForeignId[]>('dmc:foreign', ['eur', 'usd'])
   const online = useOnline()
   const install = useInstallPrompt()
   const t = STRINGS[lang]
@@ -61,7 +66,17 @@ export default function App() {
     else document.documentElement.dataset.theme = theme
   }, [theme])
 
-  const units = useMemo(() => resolveUnits(preset, custom), [preset, custom])
+  // Live exchange rates: refresh when stale and online; keep the cached/snapshot value otherwise
+  useEffect(() => {
+    if (!online || (rates.source === 'live' && Date.now() - rates.updated < STALE_MS)) return
+    let cancelled = false
+    fetchRates().then((r) => !cancelled && r && setRates(r))
+    return () => {
+      cancelled = true
+    }
+  }, [online]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const units = useMemo(() => resolveUnits(preset, custom, rates.rates), [preset, custom, rates])
   const effectiveUnit: UnitId = units[defaultUnit].factor === null ? 'rial' : defaultUnit
   const parsed = useMemo(() => (text.trim() ? parseAmount(text, effectiveUnit) : null), [text, effectiveUnit])
   const conversion = useMemo(() => (parsed ? toDirham(parsed.segments, units) : null), [parsed, units])
@@ -98,9 +113,9 @@ export default function App() {
 
   const onShare = useCallback(async () => {
     if (dirham === null || !values) return
-    const lines = (['rial', 'santim', 'million'] as const)
+    const lines = (['rial', 'eur', 'usd'] as const)
       .filter((u) => values[u] !== null)
-      .map((u) => ({ label: unitName(units[u], 'ar'), value: fmt(values[u]!, 'en') }))
+      .map((u) => ({ label: `${unitName(units[u], 'ar')}${isForeign(u) ? ` ${units[u].def.symbol}` : ''}`, value: fmt(values[u]!, 'en') }))
     await shareCard(
       { input: text.trim(), dirhamText: fmtDirham(dirham, 'en'), lines, phrase: phrases[0]?.ar, url: location.host || 'darija-money-converter' },
       t.appName,
@@ -115,7 +130,7 @@ export default function App() {
         <div className="zellige" aria-hidden />
         <header className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <img src="/favicon.svg" alt="" width={44} height={44} className="size-11 rounded-[14px] shadow-card" />
+            <CoinLogo size={48} label={lang === 'ar' ? 'شحال؟' : 'CHHAL?'} />
             <div className="min-w-0">
               <h1 className="text-[20px] font-bold leading-tight tracking-tight">{t.appName}</h1>
               <p className="hidden truncate text-[12.5px] text-ink-3 sm:block">{t.tagline}</p>
@@ -165,7 +180,7 @@ export default function App() {
               t={t}
             />
             <div className="mt-5 space-y-3">
-              {parsed && <Interpretation segments={parsed.segments} units={units} lang={lang} t={t} />}
+              {parsed && <Interpretation segments={parsed.segments} multiplier={parsed.multiplier} units={units} lang={lang} t={t} />}
               {text.trim() && !parsed && <Problem>{t.notUnderstood}</Problem>}
               {missing.length > 0 && (
                 <Problem
@@ -178,10 +193,13 @@ export default function App() {
                   {t.missingUnit(unitName(units[missing[0]!], lang))}
                 </Problem>
               )}
-              <ResultHero dirham={dirham} lang={lang} t={t} onShare={onShare} />
+              <ResultHero dirham={dirham} lang={lang} t={t} onShare={onShare} foreignNote={Boolean(parsed?.segments.some((x) => isForeign(x.unit)))} />
               {!text.trim() && <EmptyHint t={t} />}
             </div>
           </Card>
+          <div className="hidden lg:block">
+            <SoukKit dirham={dirham} lang={lang} t={t} />
+          </div>
           <div className="hidden lg:block">
             <History items={history} onPick={setText} onClear={() => setHistory([])} lang={lang} t={t} />
           </div>
@@ -190,6 +208,18 @@ export default function App() {
         <div className="min-w-0 space-y-4 lg:col-span-5">
           <SayIt phrases={phrases} units={units} lang={lang} t={t} />
           <Equivalents values={values} units={units} lang={lang} t={t} preset={preset} presetLabel={presetLabel} onOpenRegion={() => setRegionOpen(true)} />
+          <ForeignCurrencies
+            values={values}
+            units={units}
+            rates={rates}
+            shown={shownForeign}
+            onToggle={(id) => setShownForeign((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]))}
+            lang={lang}
+            t={t}
+          />
+          <div className="lg:hidden">
+            <SoukKit dirham={dirham} lang={lang} t={t} />
+          </div>
           <div className="lg:hidden">
             <History items={history} onPick={setText} onClear={() => setHistory([])} lang={lang} t={t} />
           </div>

@@ -37,8 +37,10 @@ export interface Phrase {
 const isWhole = (n: number) => Math.abs(n - Math.round(n)) < 1e-6
 
 /** How a local would say this Dirham amount out loud, in each sensible unit. */
-export function sayIt(dirham: number, units: ResolvedUnits): Phrase[] {
-  if (!(dirham > 0) || dirham >= 1e12) return []
+export function sayIt(exact: number, units: ResolvedUnits): Phrase[] {
+  if (!(exact > 0) || exact >= 1e12) return []
+  // Cash stops at 5 santim, so spoken prices do too (matters for euro/dollar conversions)
+  const dirham = exact >= 0.05 ? Math.round(exact * 20) / 20 : exact
   const phrases: Phrase[] = []
 
   // Rial: everyday prices (souk, taxi, café) up to ~100k DH

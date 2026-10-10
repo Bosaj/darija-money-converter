@@ -4,6 +4,20 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-10
+### Added
+- Euro, US dollar and optional GBP, CAD, CHF, SAR, AED as parser units: words, symbols (`50€`, `$20`) and two-word names that don't clash with the Moroccan rial or franc. Live mid-market rates from ExchangeRate-API, a device cache, a dated offline snapshot, attribution, and an "approximate" note on converted totals. (#6)
+- Bimetallic coin logo (brass ring, nickel centre, reeded edge, zellige star, struck inscription) with a 3D flip and a light sweep. PWA icons, favicon and share card were regenerated from it. (#7)
+- Souk kit, haggle tab: −10/−20/−30% counter-offers spoken in Darija, plus useful phrases with text-to-speech. (#8)
+- Souk kit, pay tab: the fewest Moroccan notes and coins to hand over. (#9)
+- Souk kit, learn tab: a cheat sheet of common amounts and a price quiz with a streak counter. (#10)
+- Calculator quantities: `3 x 15 dh`, `500 ريال × 4`. (#11)
+
+### Changed
+- Spoken phrases round to 5 santim, so converted amounts read naturally.
+- The hero number scales with its length instead of truncating on small phones.
+- Souk kit sits below the results on phones.
+
 ## [0.4.0] - 2026-10-10
 First working release: all four roadmap milestones (v0.1–v0.4).
 
@@ -24,5 +38,6 @@ First working release: all four roadmap milestones (v0.1–v0.4).
 ### Added
 - Initial repository scaffold: README (with architecture, roadmap and an LLM-handoff section), LICENSE, .gitignore, CONTRIBUTING, issue/PR templates, and wiki pages.
 
-[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.5.0
 [0.4.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.4.0

@@ -24,6 +24,8 @@ Client-side only: a React + Vite PWA. No backend, no analytics.
 | `lib/spell.ts` | Number to Darija words, noun agreement |
 | `lib/convert.ts` | Conversions and "say it like a local" |
 | `lib/shareCard.ts` | 1080×1350 price card |
+| `lib/rates.ts` | Live MAD exchange rates, device cache, dated snapshot |
+| `lib/souk.ts` | Haggle offers, cash breakdown, cheat sheet, quiz |
 
 ## Quality
-64 Vitest tests, including a spell → parse round trip in both scripts. CI runs type-check, tests and build on every PR.
+91 Vitest tests, including a spell → parse round trip in both scripts. CI runs type-check, tests and build on every PR.
