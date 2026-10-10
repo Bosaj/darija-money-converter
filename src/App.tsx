@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Download, MapPin, Moon, Sun, SunMoon, WifiOff } from 'lucide-react'
 import { DEFAULT_PRESET, isForeign, PRESETS, resolveUnits, type CustomFactors, type ForeignId, type Lang, type PresetId, type UnitId } from './lib/conventions'
-import { fetchRates, initialRates, STALE_MS, type RateState } from './lib/rates'
+import { fetchRates, initialRates, REFRESH_MS, STALE_MS, type RateState } from './lib/rates'
+import { locate, placeFor, timezoneCurrency } from './lib/place'
 import { parseAmount } from './lib/parse'
 import { fromDirham, sayIt, toDirham } from './lib/convert'
 import { fmt, fmtDirham, REPO_URL, unitName } from './lib/format'
 import { shareCard } from './lib/shareCard'
 import { STRINGS } from './i18n/strings'
-import { useInstallPrompt, useOnline, useStored } from './hooks'
+import { DEFAULT_VOICE, speak, useInstallPrompt, useOnline, useStored, VOICE_KEY, type VoicePrefs } from './hooks'
 import { AmountInput } from './components/AmountInput'
 import { EmptyHint, Equivalents, ForeignCurrencies, Interpretation, Problem, ResultHero, SayIt } from './components/Results'
 import { SoukKit } from './components/SoukKit'
 import { CoinLogo } from './components/CoinLogo'
-import { RegionDialog } from './components/RegionDialog'
+import { RegionDialog, type PlaceStatus } from './components/RegionDialog'
 import { History, type HistoryEntry } from './components/History'
 import { Card, GithubMark, IconButton } from './components/ui'
 
@@ -49,7 +50,14 @@ export default function App() {
   const [text, setText] = useState(initialText)
   const [regionOpen, setRegionOpen] = useState(false)
   const [rates, setRates] = useState<RateState>(initialRates)
-  const [shownForeign, setShownForeign] = useStored<ForeignId[]>('dmc:foreign', ['eur', 'usd'])
+  const [shownForeign, setShownForeign] = useStored<ForeignId[]>('dmc:foreign', (() => {
+    // no-permission hint: put the time zone's currency first (Europe/Paris → EUR, America/Toronto → CAD …)
+    const tz = timezoneCurrency()
+    return tz && !['eur', 'usd'].includes(tz) ? [tz, 'eur', 'usd'] : ['eur', 'usd']
+  })())
+  const [voice, setVoice] = useStored<VoicePrefs>(VOICE_KEY, DEFAULT_VOICE)
+  const [place, setPlace] = useState<PlaceStatus>({ state: 'idle' })
+  const [city, setCity] = useStored<string | null>('dmc:city', null)
   const online = useOnline()
   const install = useInstallPrompt()
   const t = STRINGS[lang]
@@ -75,6 +83,41 @@ export default function App() {
       cancelled = true
     }
   }, [online]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keep rates live: refresh every 15 min while the tab is visible and online
+  useEffect(() => {
+    if (!online) return
+    const id = setInterval(() => {
+      if (document.visibilityState === 'visible') fetchRates().then((r) => r && setRates(r))
+    }, REFRESH_MS)
+    return () => clearInterval(id)
+  }, [online])
+
+  const detectPlace = useCallback(async () => {
+    setPlace({ state: 'locating' })
+    try {
+      const pos = await locate()
+      const found = placeFor(pos.coords.latitude, pos.coords.longitude)
+      if (found.kind === 'morocco') {
+        setPreset(found.city.preset)
+        const name = lang === 'ar' ? found.city.ar : found.city.name
+        setCity(name)
+        setPlace({ state: 'done', message: `${t.placeIn(name)} · ${PRESETS[found.city.preset].names[lang]}` })
+      } else if (found.currency) {
+        const cur = found.currency
+        setShownForeign((list) => [cur, ...list.filter((x) => x !== cur)])
+        setDefaultUnit(cur)
+        setCity(null)
+        setPlace({ state: 'done', message: t.placeAbroad(units[cur].def.names[lang]) })
+      } else {
+        setCity(null)
+        setPlace({ state: 'done', message: t.placeAbroadUnknown })
+      }
+    } catch (err) {
+      const denied = (err as GeolocationPositionError)?.code === 1
+      setPlace({ state: 'error', message: denied ? t.placeDenied : t.placeError })
+    }
+  }, [lang, t, setPreset, setCity, setShownForeign, setDefaultUnit]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const units = useMemo(() => resolveUnits(preset, custom, rates.rates), [preset, custom, rates])
   const effectiveUnit: UnitId = units[defaultUnit].factor === null ? 'rial' : defaultUnit
@@ -143,7 +186,7 @@ export default function App() {
               className="btn-press hidden min-h-11 items-center gap-1.5 rounded-2xl border border-line bg-surface px-3.5 text-[13px] font-medium text-ink-2 shadow-card hover:text-ink sm:inline-flex"
             >
               <MapPin size={15} className="text-brand" />
-              {presetLabel}
+              {city ? `${city} · ${presetLabel}` : presetLabel}
             </button>
             <div role="radiogroup" aria-label={t.language} className="flex rounded-2xl border border-line bg-surface p-1 shadow-card">
               {LANGS.map((l) => (
@@ -178,6 +221,8 @@ export default function App() {
               units={units}
               lang={lang}
               t={t}
+              voice={voice}
+              onVoice={setVoice}
             />
             <div className="mt-5 space-y-3">
               {parsed && <Interpretation segments={parsed.segments} multiplier={parsed.multiplier} units={units} lang={lang} t={t} />}
@@ -193,7 +238,17 @@ export default function App() {
                   {t.missingUnit(unitName(units[missing[0]!], lang))}
                 </Problem>
               )}
-              <ResultHero dirham={dirham} lang={lang} t={t} onShare={onShare} foreignNote={Boolean(parsed?.segments.some((x) => isForeign(x.unit)))} />
+              <ResultHero
+                dirham={dirham}
+                lang={lang}
+                t={t}
+                onShare={onShare}
+                foreignNote={Boolean(parsed?.segments.some((x) => isForeign(x.unit)))}
+                onRead={() => {
+                  const said = phrases.find((x) => x.unit === 'dirham')?.ar
+                  if (said) speak(`${text.trim()}، ${STRINGS.ar.means} ${said}`)
+                }}
+              />
               {!text.trim() && <EmptyHint t={t} />}
             </div>
           </Card>
@@ -249,6 +304,8 @@ export default function App() {
       </footer>
 
       <RegionDialog
+        place={place}
+        onDetect={detectPlace}
         open={regionOpen}
         onClose={() => setRegionOpen(false)}
         preset={preset}
