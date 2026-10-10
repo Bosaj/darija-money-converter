@@ -1,14 +1,20 @@
 import { useId, useState } from 'react'
 
+/** Interlaced Moroccan star (pentagram), centred on 0,0, radius 118. */
+export const STAR = 'M0 -118 L69.4 95.5 L-112.2 -36.5 L112.2 -36.5 L-69.4 95.5 Z'
+/** Short pieces redrawn on top so each line passes over, then under, like the flag's seal. */
+export const WEAVE = ['M20.3 -55.5 L32.7 -17.4', 'M59 2.2 L26.7 25.7', 'M16.2 56.8 L-16.2 33.3', 'M-49 32.9 L-36.7 -5.1', 'M-46.5 -36.5 L-6.5 -36.5']
+
 /**
- * Bimetallic coin (like the 10 DH piece): brass ring with reeded edge and
- * beading, nickel centre with an embossed zellige star, and the app name
- * struck around the ring. Tap to flip.
+ * Bimetallic coin in the spirit of the 10 DH piece: brass ring with a reeded
+ * edge and struck inscription, nickel centre with a raised, green-enamelled,
+ * interlaced Moroccan star. Tap to flip.
  */
 export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }: { size?: number; label?: string; interactive?: boolean }) {
   const id = useId().replace(/:/g, '')
   const [spin, setSpin] = useState(0)
   const g = (name: string) => `${name}-${id}`
+  const inscription = `${label} · CHHAL · ${label} · DIRHAM ·`
 
   const coin = (
     <svg viewBox="0 0 512 512" width={size} height={size} aria-hidden className="block">
@@ -33,10 +39,15 @@ export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }
           <stop offset="0.9" stopColor="#7c858f" />
           <stop offset="1" stopColor="#c9ced4" />
         </radialGradient>
-        <linearGradient id={g('star')} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f4f6f8" />
-          <stop offset="0.5" stopColor="#b9c0c8" />
-          <stop offset="1" stopColor="#8a939d" />
+        <linearGradient id={g('rim')} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#d9dde2" />
+          <stop offset="0.5" stopColor="#8a939d" />
+          <stop offset="1" stopColor="#5b636c" />
+        </linearGradient>
+        <linearGradient id={g('enamel')} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#2bb36a" />
+          <stop offset="0.55" stopColor="#0b7a3f" />
+          <stop offset="1" stopColor="#065a2d" />
         </linearGradient>
         <path id={g('ring')} d="M256 256 m-186 0 a186 186 0 1 1 372 0 a186 186 0 1 1 -372 0" />
         <linearGradient id={g('sweep')} x1="0" y1="0" x2="1" y2="0">
@@ -49,45 +60,45 @@ export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }
         </clipPath>
       </defs>
 
+      {/* brass ring, reeded edge, struck inscription */}
       <circle cx="256" cy="256" r="240" fill={`url(#${g('brass')})`} />
       <circle cx="256" cy="256" r="236" fill="none" stroke="#7a520e" strokeWidth="9" strokeDasharray="3 5" opacity="0.55" />
       <circle cx="256" cy="256" r="240" fill={`url(#${g('shine')})`} />
       <circle cx="256" cy="256" r="222" fill="none" stroke="#fff4c9" strokeWidth="3" opacity="0.75" />
       <circle cx="256" cy="256" r="218" fill="none" stroke="#8d6111" strokeWidth="2.5" opacity="0.8" />
+      {(
+        [
+          ['#7a520e', 0.85, 0],
+          ['#fff3c2', 0.5, -1.5],
+        ] as const
+      ).map(([fill, op, d]) => (
+        <text key={fill} fontSize="38" fontWeight="700" fill={fill} opacity={op} transform={`translate(${d} ${d})`} direction="ltr" style={{ fontFamily: 'var(--font-sans)' }}>
+          <textPath href={`#${g('ring')}`} startOffset="0" textLength={1150} lengthAdjust="spacing">
+            {inscription}
+          </textPath>
+        </text>
+      ))}
 
-      {/* struck inscription between rim and centre */}
-      <text fontSize="38" fontWeight="700" fill="#7a520e" opacity="0.85" direction="ltr" style={{ fontFamily: 'var(--font-sans)' }}>
-        <textPath href={`#${g('ring')}`} startOffset="0" textLength={1150} lengthAdjust="spacing">
-          {`${label} · CHHAL · ${label} · DIRHAM ·`}
-        </textPath>
-      </text>
-      <text fontSize="38" fontWeight="700" fill="#fff3c2" opacity="0.5" transform="translate(-1.5 -1.5)" direction="ltr" style={{ fontFamily: 'var(--font-sans)' }}>
-        <textPath href={`#${g('ring')}`} startOffset="0" textLength={1150} lengthAdjust="spacing">
-          {`${label} · CHHAL · ${label} · DIRHAM ·`}
-        </textPath>
-      </text>
-
+      {/* nickel centre */}
       <circle cx="256" cy="256" r="160" fill="#6f5010" opacity="0.55" />
       <circle cx="256" cy="256" r="154" fill={`url(#${g('nickel')})`} />
       <circle cx="256" cy="256" r="154" fill="none" stroke="#5f6770" strokeWidth="3" />
       <circle cx="256" cy="256" r="146" fill="none" stroke="#fff" strokeWidth="2" opacity="0.6" />
 
-      {(
-        [
-          [4, '#3f464e', 0.45],
-          [-3, '#fff', 0.8],
-          [0, `url(#${g('star')})`, 1],
-        ] as const
-      ).map(([d, fill, op]) => (
-        <g key={d} transform={`translate(${256 + d} ${256 + d})`} fill={fill} opacity={op}>
-          <rect x="-82" y="-82" width="164" height="164" rx="10" />
-          <rect x="-82" y="-82" width="164" height="164" rx="10" transform="rotate(45)" />
-        </g>
-      ))}
-      <circle cx="256" cy="256" r="46" fill={`url(#${g('brass')})`} stroke="#6f4b0c" strokeWidth="3" />
-      <circle cx="256" cy="256" r="46" fill={`url(#${g('shine')})`} />
-      <circle cx="256" cy="256" r="24" fill="none" stroke="#7a520e" strokeWidth="5" opacity="0.7" />
-      <circle cx="254" cy="254" r="24" fill="none" stroke="#fff3c2" strokeWidth="2" opacity="0.7" />
+      {/* raised interlaced star: cast shadow, top light, metal rim, green enamel, weave */}
+      <g transform="translate(256 262)" fill="none" strokeLinejoin="miter" strokeMiterlimit={10}>
+        <path d={STAR} stroke="#2f363d" strokeWidth="26" opacity="0.35" transform="translate(4 5)" />
+        <path d={STAR} stroke="#fff" strokeWidth="26" opacity="0.7" transform="translate(-2.5 -2.5)" />
+        <path d={STAR} stroke={`url(#${g('rim')})`} strokeWidth="26" />
+        <path d={STAR} stroke={`url(#${g('enamel')})`} strokeWidth="15" />
+        {WEAVE.map((d) => (
+          <g key={d}>
+            <path d={d} stroke={`url(#${g('rim')})`} strokeWidth="26" strokeLinecap="butt" />
+            <path d={d} stroke={`url(#${g('enamel')})`} strokeWidth="15" strokeLinecap="butt" />
+          </g>
+        ))}
+        <path d={STAR} stroke="#9ff0c2" strokeWidth="2" opacity="0.35" transform="translate(-2 -2)" />
+      </g>
 
       {/* light sweep across the metal */}
       <g clipPath={`url(#${g('clip')})`}>
