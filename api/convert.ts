@@ -5,10 +5,10 @@
  *   unit     unit to assume when none is said: dirham | rial | santim | eur | usd … (default rial)
  *   region   general | oriental | north (default general)
  */
-import { parseAmount } from '../src/lib/parse'
-import { FOREIGN_IDS, resolveUnits, UNIT_IDS, type ForeignId, type PresetId, type UnitId } from '../src/lib/conventions'
-import { fromDirham, sayIt, toDirham } from '../src/lib/convert'
-import { latest } from './rates'
+import { parseAmount } from '../src/lib/parse.js'
+import { FOREIGN_IDS, resolveUnits, UNIT_IDS, type ForeignId, type PresetId, type UnitId } from '../src/lib/conventions.js'
+import { fromDirham, sayIt, toDirham } from '../src/lib/convert.js'
+import { latest } from './rates.js'
 
 const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-methods': 'GET, OPTIONS' }
 const json = (status: number, data: unknown, cache = 'public, max-age=60, s-maxage=600') =>

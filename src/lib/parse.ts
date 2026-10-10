@@ -1,6 +1,6 @@
-import { normalize } from './normalize'
-import { hasAndPrefix, lookup, lookupPhrase, type Token } from './lexicon'
-import type { UnitId } from './conventions'
+import { normalize } from './normalize.js'
+import { hasAndPrefix, lookup, lookupPhrase, type Token } from './lexicon.js'
+import type { UnitId } from './conventions.js'
 
 export interface Segment {
   amount: number

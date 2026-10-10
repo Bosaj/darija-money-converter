@@ -1,5 +1,5 @@
-import { normalize } from './normalize'
-import { UNITS, UNIT_IDS, type UnitId } from './conventions'
+import { normalize } from './normalize.js'
+import { UNITS, UNIT_IDS, type UnitId } from './conventions.js'
 
 export type Token =
   | { kind: 'num'; value: number } // additive number word: 1..999, 2000 handled as mag
