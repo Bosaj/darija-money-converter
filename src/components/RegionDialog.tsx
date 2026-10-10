@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Check, Loader2, LocateFixed, MapPin, X } from 'lucide-react'
-import { PRESETS, UNITS, type CustomFactors, type Lang, type PresetId, type UnitId } from '../lib/conventions'
+import { PRESETS, UNITS, type CustomFactors, type FrancMode, type Lang, type PresetId, type UnitId } from '../lib/conventions'
 import type { Strings } from '../i18n/strings'
 import { fmt, reportUrl } from '../lib/format'
 import { Badge, IconButton } from './ui'
@@ -21,11 +21,13 @@ interface Props {
   onPreset: (p: PresetId) => void
   custom: CustomFactors
   onCustom: (c: CustomFactors) => void
+  franc: FrancMode
+  onFranc: (f: FrancMode) => void
   lang: Lang
   t: Strings
 }
 
-export function RegionDialog({ place, onDetect, open, onClose, preset, onPreset, custom, onCustom, lang, t }: Props) {
+export function RegionDialog({ place, onDetect, open, onClose, preset, onPreset, custom, onCustom, franc, onFranc, lang, t }: Props) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -137,6 +139,27 @@ export function RegionDialog({ place, onDetect, open, onClose, preset, onPreset,
             )}
           </div>
         </div>
+
+        <section aria-labelledby="franc-title" className="mt-4 rounded-[18px] border border-line p-3.5">
+          <h3 id="franc-title" className="text-[14.5px] font-semibold">{t.francTitle}</h3>
+          <p className="mt-1 text-[12.5px] text-ink-3">{t.francHint}</p>
+          <div role="radiogroup" aria-labelledby="franc-title" className="mt-3 grid grid-cols-2 gap-1 rounded-2xl border border-line bg-surface-2 p-1">
+            {(['santim', 'dirham'] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                role="radio"
+                aria-checked={franc === mode}
+                onClick={() => onFranc(mode)}
+                className={`btn-press min-h-10 rounded-xl px-3 text-[13px] font-semibold ${franc === mode ? 'bg-brand text-brand-ink shadow-card' : 'text-ink-2 hover:text-ink'}`}
+              >
+                {mode === 'santim' ? t.francSantim : t.francDirham}
+                <span dir="ltr" className="tabular ms-1.5 font-normal opacity-80">{mode === 'santim' ? '0.01 DH' : '1 DH'}</span>
+              </button>
+            ))}
+          </div>
+          {franc === 'dirham' && <p className="enter mt-2 text-[12px] text-warn">{t.francReported}</p>}
+        </section>
 
         <a
           href={reportUrl('doro', preset === 'custom' ? 'my city' : PRESETS[preset].names.en)}

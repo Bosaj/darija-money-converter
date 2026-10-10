@@ -228,7 +228,7 @@ describe('foreign currencies', () => {
     expect(parseAmount('100 بالريال السعودي', 'dirham')?.segments[0]?.unit).toBe('sar')
     expect(parseAmount('100 ريال', 'dirham')?.segments[0]?.unit).toBe('rial')
     expect(parseAmount('50 فرنك سويسري', 'dirham')?.segments[0]?.unit).toBe('chf')
-    expect(parseAmount('50 فرنك', 'dirham')?.segments[0]?.unit).toBe('santim')
+    expect(parseAmount('50 فرنك', 'dirham')?.segments[0]?.unit).toBe('franc')
     expect(parseAmount('200 درهم إماراتي', 'dirham')?.segments[0]?.unit).toBe('aed')
     expect(parseAmount('20 dollar canadien', 'dirham')?.segments[0]?.unit).toBe('cad')
     expect(parseAmount('20 dollar', 'dirham')?.segments[0]?.unit).toBe('usd')

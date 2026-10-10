@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Download, MapPin, Moon, Sun, SunMoon, WifiOff } from 'lucide-react'
-import { DEFAULT_PRESET, isForeign, PRESETS, resolveUnits, type CustomFactors, type ForeignId, type Lang, type PresetId, type UnitId } from './lib/conventions'
+import { DEFAULT_PRESET, isForeign, PRESETS, resolveUnits, type CustomFactors, type ForeignId, type FrancMode, type Lang, type PresetId, type UnitId } from './lib/conventions'
 import { fetchRates, initialRates, REFRESH_MS, STALE_MS, type RateState } from './lib/rates'
 import { locate, placeFor, timezoneCurrency } from './lib/place'
 import { parseAmount } from './lib/parse'
@@ -12,6 +12,7 @@ import { DEFAULT_VOICE, speak, useInstallPrompt, useOnline, useStored, VOICE_KEY
 import { AmountInput } from './components/AmountInput'
 import { EmptyHint, Equivalents, ForeignCurrencies, Interpretation, Problem, ResultHero, SayIt } from './components/Results'
 import { SoukKit } from './components/SoukKit'
+import { Backdrop } from './components/Backdrop'
 import { CoinLogo } from './components/CoinLogo'
 import { RegionDialog, type PlaceStatus } from './components/RegionDialog'
 import { History, type HistoryEntry } from './components/History'
@@ -45,6 +46,7 @@ export default function App() {
   const [theme, setTheme] = useStored<Theme>('dmc:theme', 'system')
   const [preset, setPreset] = useStored<PresetId>('dmc:preset', DEFAULT_PRESET)
   const [custom, setCustom] = useStored<CustomFactors>('dmc:custom', {})
+  const [franc, setFranc] = useStored<FrancMode>('dmc:franc', 'santim')
   const [defaultUnit, setDefaultUnit] = useStored<UnitId>('dmc:unit', 'rial')
   const [history, setHistory] = useStored<HistoryEntry[]>('dmc:history', [])
   const [text, setText] = useState(initialText)
@@ -119,7 +121,7 @@ export default function App() {
     }
   }, [lang, t, setPreset, setCity, setShownForeign, setDefaultUnit]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const units = useMemo(() => resolveUnits(preset, custom, rates.rates), [preset, custom, rates])
+  const units = useMemo(() => resolveUnits(preset, custom, rates.rates, franc), [preset, custom, rates, franc])
   const effectiveUnit: UnitId = units[defaultUnit].factor === null ? 'rial' : defaultUnit
   const parsed = useMemo(() => (text.trim() ? parseAmount(text, effectiveUnit) : null), [text, effectiveUnit])
   const conversion = useMemo(() => (parsed ? toDirham(parsed.segments, units) : null), [parsed, units])
@@ -169,8 +171,8 @@ export default function App() {
 
   return (
     <div className="min-h-dvh">
+      <Backdrop />
       <div className="relative">
-        <div className="zellige" aria-hidden />
         <header className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
             <CoinLogo size={48} label={lang === 'ar' ? 'شحال؟' : 'CHHAL?'} />
@@ -311,6 +313,8 @@ export default function App() {
         preset={preset}
         onPreset={setPreset}
         custom={custom}
+        franc={franc}
+        onFranc={setFranc}
         onCustom={setCustom}
         lang={lang}
         t={t}

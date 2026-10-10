@@ -4,9 +4,10 @@
  *   q        the phrase (Arabic script, Arabizi, French, English or digits)
  *   unit     unit to assume when none is said: dirham | rial | santim | eur | usd … (default rial)
  *   region   general | oriental | north (default general)
+ *   franc    santim | dirham: what "franc" means (default santim, 1/100 DH)
  */
 import { parseAmount } from '../src/lib/parse.js'
-import { FOREIGN_IDS, resolveUnits, UNIT_IDS, type ForeignId, type PresetId, type UnitId } from '../src/lib/conventions.js'
+import { FOREIGN_IDS, resolveUnits, UNIT_IDS, type FrancMode, type ForeignId, type PresetId, type UnitId } from '../src/lib/conventions.js'
 import { fromDirham, sayIt, toDirham } from '../src/lib/convert.js'
 import { latest } from './rates.js'
 
@@ -19,6 +20,7 @@ export async function convert(url: string, getRates = () => latest(FOREIGN_IDS.m
   const q = (u.searchParams.get('q') ?? '').slice(0, 200)
   const unit = (UNIT_IDS as readonly string[]).includes(u.searchParams.get('unit') ?? '') ? (u.searchParams.get('unit') as UnitId) : 'rial'
   const region = (['general', 'oriental', 'north'] as const).find((r) => r === u.searchParams.get('region')) ?? 'general'
+  const franc: FrancMode = u.searchParams.get('franc') === 'dirham' ? 'dirham' : 'santim'
   if (!q.trim()) return { status: 400, body: { error: 'missing_q', message: 'Pass the phrase as ?q=' } }
 
   const parsed = parseAmount(q, unit)
@@ -35,13 +37,14 @@ export async function convert(url: string, getRates = () => latest(FOREIGN_IDS.m
       /* foreign units stay null */
     }
   }
-  const units = resolveUnits(region as PresetId, {}, rates as Record<ForeignId, number>)
+  const units = resolveUnits(region as PresetId, {}, rates as Record<ForeignId, number>, franc)
   const { dirham, missing } = toDirham(parsed.segments, units)
   return {
     status: 200,
     body: {
       q,
       region,
+      franc,
       segments: parsed.segments,
       multiplier: parsed.multiplier,
       dirham,
