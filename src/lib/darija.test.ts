@@ -3,6 +3,7 @@ import { parseAmount } from './parse'
 import { spellCount, spellNumber } from './spell'
 import { fromDirham, sayIt, toDirham } from './convert'
 import { resolveUnits } from './conventions'
+import { SNAPSHOT, fromApi, fetchRates } from './rates'
 
 const general = resolveUnits('general')
 const dh = (text: string, fallback: Parameters<typeof parseAmount>[1] = 'rial') => {
@@ -185,7 +186,7 @@ describe('spellNumber', () => {
 
 describe('fromDirham / sayIt', () => {
   it('converts Dirham to every unit', () => {
-    expect(fromDirham(50, general)).toEqual({ dirham: 50, rial: 1000, santim: 5000, million: 0.005, mlyar: 0.000005, doro: null })
+    expect(fromDirham(50, general)).toMatchObject({ dirham: 50, rial: 1000, santim: 5000, million: 0.005, mlyar: 0.000005, doro: null, eur: null })
   })
 
   it('says amounts like a local', () => {
@@ -195,5 +196,74 @@ describe('fromDirham / sayIt', () => {
     expect(sayIt(12.5, general).find((x) => x.unit === 'dirham')?.ar).toBe('طناش درهم و نص')
     expect(sayIt(15_000, general).find((x) => x.unit === 'million')?.ar).toBe('مليون و خمسمية ألف')
     expect(sayIt(0, general)).toEqual([])
+    expect(sayIt(1094.49, general).find((x) => x.unit === 'dirham')?.ar).toBe('ألف و ربعة و تسعين درهم و نص')
+  })
+})
+
+describe('foreign currencies', () => {
+  const withRates = resolveUnits('general', {}, { ...SNAPSHOT.rates, eur: 10, usd: 9 })
+  const conv = (text: string, fallback: Parameters<typeof parseAmount>[1] = 'rial') => {
+    const p = parseAmount(text, fallback)
+    return p ? toDirham(p.segments, withRates).dirham : null
+  }
+
+  it.each([
+    ['100 euro', 1000],
+    ['100 euros', 1000],
+    ['50€', 500],
+    ['€50', 500],
+    ['$20', 180],
+    ['20$', 180],
+    ['20 dollars', 180],
+    ['ألف أورو', 10_000],
+    ['جوج د الألف دولار', 18_000],
+    ['ميتين دولار', 1800],
+    ['100 eur et 10 usd', 1090],
+  ])('%s → %d DH', (text, expected) => {
+    expect(conv(text)).toBeCloseTo(expected, 6)
+  })
+
+  it('reads multi-word currencies without clashing with the Moroccan rial or franc', () => {
+    expect(parseAmount('100 ريال سعودي', 'dirham')?.segments[0]?.unit).toBe('sar')
+    expect(parseAmount('100 بالريال السعودي', 'dirham')?.segments[0]?.unit).toBe('sar')
+    expect(parseAmount('100 ريال', 'dirham')?.segments[0]?.unit).toBe('rial')
+    expect(parseAmount('50 فرنك سويسري', 'dirham')?.segments[0]?.unit).toBe('chf')
+    expect(parseAmount('50 فرنك', 'dirham')?.segments[0]?.unit).toBe('santim')
+    expect(parseAmount('200 درهم إماراتي', 'dirham')?.segments[0]?.unit).toBe('aed')
+    expect(parseAmount('20 dollar canadien', 'dirham')?.segments[0]?.unit).toBe('cad')
+    expect(parseAmount('20 dollar', 'dirham')?.segments[0]?.unit).toBe('usd')
+  })
+
+  it('has no foreign value until rates are known', () => {
+    const p = parseAmount('100 euro', 'rial')!
+    expect(toDirham(p.segments, general)).toEqual({ dirham: null, missing: ['eur'] })
+  })
+
+  it('converts the API format and caches it', async () => {
+    const api = { result: 'success', time_last_update_unix: 1791590400, rates: { EUR: 0.1, USD: 0.1005, GBP: 0.0773, CAD: 0.1459, CHF: 0.085, SAR: 0.3768, AED: 0.369 } }
+    expect(fromApi(api)?.rates.eur).toBe(10)
+    expect(fromApi({ ...api, result: 'error' })).toBeNull()
+    expect(fromApi({ ...api, rates: { EUR: 0.1 } })).toBeNull()
+    const live = await fetchRates((async () => new Response(JSON.stringify(api))) as unknown as typeof fetch)
+    expect(live?.source).toBe('live')
+    expect(JSON.parse(localStorage.getItem('dmc:rates')!).rates.usd).toBeCloseTo(9.9502, 3)
+    expect(await fetchRates((async () => { throw new Error('offline') }) as unknown as typeof fetch)).toBeNull()
+  })
+})
+
+describe('quantities', () => {
+  it.each([
+    ['3 x 15 dh', 45],
+    ['3x15dh', 45],
+    ['500 ريال × 4', 100],
+    ['2 * ميتين ريال', 20],
+    ['4 x مية', 20],
+  ])('%s → %d DH', (text, expected) => {
+    expect(dh(text)).toBeCloseTo(expected, 6)
+  })
+
+  it('reports the multiplier for display', () => {
+    expect(parseAmount('3 x 15 dh', 'rial')?.multiplier).toBe(3)
+    expect(parseAmount('15 dh', 'rial')?.multiplier).toBe(1)
   })
 })
