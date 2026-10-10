@@ -4,6 +4,16 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-10
+### Added
+- `GET /api/rates`: latest MAD rates merged with a 30-day history and the daily change, CDN-cached and CORS-open. `GET /api/convert`: the Darija parser as a JSON API. The app shows ▲/▼ change, 30-day sparklines and a live indicator, and refreshes every 15 minutes. (#13)
+- Coin logo with a raised, green-enamelled, interlaced Moroccan star; favicon and PWA icons regenerated. (#14)
+- Voice: mic language picker (Darija / Standard Arabic / French / English), live interim text, a level meter and clear error states. The parser now understands Standard Arabic, French and English number words. Text-to-speech prefers Moroccan Arabic voices and adds a voice and speed picker plus "read the result". (#15)
+- Detect my place: offline nearest-city matching sets the region preset; abroad, bare numbers switch to the home currency; a time-zone hint works without permission. (#16)
+
+### Fixed
+- Shared parser modules use explicit `.js` import extensions and a JSON import attribute, so Vercel's Node ESM functions can load them.
+
 ## [0.5.0] - 2026-10-10
 ### Added
 - Euro, US dollar and optional GBP, CAD, CHF, SAR, AED as parser units: words, symbols (`50€`, `$20`) and two-word names that don't clash with the Moroccan rial or franc. Live mid-market rates from ExchangeRate-API, a device cache, a dated offline snapshot, attribution, and an "approximate" note on converted totals. (#6)
@@ -38,6 +48,7 @@ First working release: all four roadmap milestones (v0.1–v0.4).
 ### Added
 - Initial repository scaffold: README (with architecture, roadmap and an LLM-handoff section), LICENSE, .gitignore, CONTRIBUTING, issue/PR templates, and wiki pages.
 
-[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.6.0
 [0.5.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.5.0
 [0.4.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.4.0
