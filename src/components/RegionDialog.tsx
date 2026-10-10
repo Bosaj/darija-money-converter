@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Check, MapPin, X } from 'lucide-react'
+import { Check, Loader2, LocateFixed, MapPin, X } from 'lucide-react'
 import { PRESETS, UNITS, type CustomFactors, type Lang, type PresetId, type UnitId } from '../lib/conventions'
 import type { Strings } from '../i18n/strings'
 import { fmt, reportUrl } from '../lib/format'
@@ -7,7 +7,14 @@ import { Badge, IconButton } from './ui'
 
 const EDITABLE: UnitId[] = ['rial', 'santim', 'doro']
 
+export interface PlaceStatus {
+  state: 'idle' | 'locating' | 'done' | 'error'
+  message?: string
+}
+
 interface Props {
+  place: PlaceStatus
+  onDetect: () => void
   open: boolean
   onClose: () => void
   preset: PresetId
@@ -18,7 +25,7 @@ interface Props {
   t: Strings
 }
 
-export function RegionDialog({ open, onClose, preset, onPreset, custom, onCustom, lang, t }: Props) {
+export function RegionDialog({ place, onDetect, open, onClose, preset, onPreset, custom, onCustom, lang, t }: Props) {
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -49,6 +56,24 @@ export function RegionDialog({ open, onClose, preset, onPreset, custom, onCustom
           </IconButton>
         </div>
         <p className="mb-4 text-[13.5px] text-ink-2">{t.regionHint}</p>
+
+        <div className="mb-4 rounded-[18px] border border-line bg-surface-2 p-3">
+          <button
+            type="button"
+            onClick={onDetect}
+            disabled={place.state === 'locating'}
+            className="btn-press inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand px-4 text-[14px] font-semibold text-brand-ink hover:bg-brand-hover disabled:opacity-60"
+          >
+            {place.state === 'locating' ? <Loader2 size={16} className="animate-spin" /> : <LocateFixed size={16} />}
+            {place.state === 'locating' ? t.locating : t.detectPlace}
+          </button>
+          {place.message && (
+            <p role="status" className={`enter mt-2 text-[13px] ${place.state === 'error' ? 'text-warn' : 'text-ink'}`}>
+              {place.message}
+            </p>
+          )}
+          <p className="mt-1.5 text-[11.5px] text-ink-3">{t.placePrivacy}</p>
+        </div>
 
         <div role="radiogroup" aria-labelledby="region-title" className="space-y-2">
           {options.map((o) => {

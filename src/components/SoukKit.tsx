@@ -12,7 +12,7 @@ type Tab = 'haggle' | 'cash' | 'learn'
 function Speak({ text, t }: { text: string; t: Strings }) {
   if (!canSpeak) return null
   return (
-    <IconButton label={t.speak} onClick={() => speak(text, 'ar-MA')}>
+    <IconButton label={t.speak} onClick={() => speak(text)}>
       <Volume2 size={17} />
     </IconButton>
   )
