@@ -33,6 +33,15 @@ function fitText(ctx: CanvasRenderingContext2D, text: string, max: number, size:
   } while (s > 24)
 }
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = src
+  })
+}
+
 export async function renderCard(d: CardData): Promise<Blob> {
   const fonts = [`600 96px ${FONT}`, `400 40px ${FONT}`]
   await Promise.all(fonts.map((f) => document.fonts?.load(f, d.input + d.dirhamText + (d.phrase ?? '')).catch(() => null)))
@@ -56,14 +65,26 @@ export async function renderCard(d: CardData): Promise<Blob> {
   ctx.textBaseline = 'middle'
   ctx.direction = 'rtl'
 
-  // brand
+  // brand: the coin logo + name
+  const coin = await loadImage('/favicon.svg').catch(() => null)
+  if (coin) {
+    ctx.save()
+    ctx.shadowColor = 'rgba(0,0,0,0.35)'
+    ctx.shadowBlur = 24
+    ctx.shadowOffsetY = 10
+    ctx.drawImage(coin, W / 2 - 300 - 48, 82, 96, 96)
+    ctx.restore()
+  }
+  ctx.textAlign = 'left'
+  ctx.direction = 'rtl'
   ctx.fillStyle = '#f2b847'
   ctx.font = `600 52px ${FONT}`
-  ctx.fillText('شحال؟', W / 2, 130)
+  ctx.direction = 'ltr'
+  ctx.fillText('شحال؟', W / 2 - 230, 118)
   ctx.fillStyle = 'rgba(255,255,255,0.7)'
   ctx.font = `400 28px ${FONT}`
-  ctx.direction = 'ltr'
-  ctx.fillText('Darija Money Converter', W / 2, 185)
+  ctx.fillText('Darija Money Converter', W / 2 - 230, 168)
+  ctx.textAlign = 'center'
 
   // input phrase
   ctx.direction = 'rtl'
