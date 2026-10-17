@@ -192,7 +192,9 @@ export function readVoicePrefs(): VoicePrefs {
 export function speak(text: string, opts: SpeakOptions = {}) {
   if (!canSpeak || !text) return
   const prefs = readVoicePrefs()
-  const { voiceURI = prefs.voiceURI, rate = prefs.rate, lang = 'ar-MA' } = opts
+  const { rate = prefs.rate, lang = 'ar-MA' } = opts
+  // the saved voice is an Arabic one: use it for Arabic only, pick a matching voice for French/English
+  const voiceURI = opts.voiceURI ?? (lang.startsWith('ar') ? prefs.voiceURI : null)
   speechSynthesis.cancel()
   const u = new SpeechSynthesisUtterance(text)
   const voices = speechSynthesis.getVoices()
