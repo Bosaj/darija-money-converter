@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-10-17
+### Fixed
+- Readex Pro (Arabic and Latin) is preloaded, so the header no longer reflows when the web font arrives on phones (mobile layout shift).
+
 ## [0.9.1] - 2026-10-17
 ### Fixed
 - The page language and direction (rtl/ltr) are set by an inline script before the first paint, using the same rule as the app. The French/English flip from the Arabic default used to move the whole page (CLS 0.8 on desktop).

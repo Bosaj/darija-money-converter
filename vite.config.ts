@@ -27,9 +27,25 @@ function devApi(): Plugin {
   }
 }
 
+/** Preload Readex Pro (Arabic + Latin) so the header doesn't reflow when the web font arrives. */
+function preloadFonts(): Plugin {
+  return {
+    name: 'preload-fonts',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html, ctx) {
+        const fonts = Object.keys(ctx.bundle ?? {}).filter((f) => /readex-pro-(arabic|latin)-wght-normal-[\w-]+\.woff2$/.test(f))
+        return { html, tags: fonts.map((f) => ({ tag: 'link', attrs: { rel: 'preload', as: 'font', type: 'font/woff2', href: `/${f}`, crossorigin: '' }, injectTo: 'head' as const })) }
+      },
+    },
+  }
+}
+
 export default defineConfig({
   plugins: [
     devApi(),
+    preloadFonts(),
     react(),
     tailwindcss(),
     VitePWA({
