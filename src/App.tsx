@@ -68,7 +68,7 @@ export default function App() {
     const root = document.documentElement
     root.lang = lang
     root.dir = lang === 'ar' ? 'rtl' : 'ltr'
-    document.title = lang === 'ar' ? 'شحال؟ · محول الفلوس بالدارجة' : `${t.appName} · Darija Money Converter`
+    document.title = lang === 'ar' ? 'حسبلي · محول الفلوس بالدارجة' : `${t.appName} · Darija Money Converter`
   }, [lang, t.appName])
 
   useEffect(() => {
@@ -175,7 +175,7 @@ export default function App() {
       <div className="relative">
         <header className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <CoinLogo size={48} label={lang === 'ar' ? 'شحال؟' : 'CHHAL?'} />
+            <CoinLogo size={48} label={lang === 'ar' ? 'حسبلي' : 'HSABLI'} />
             <div className="min-w-0">
               <h1 className="text-[20px] font-bold leading-tight tracking-tight">{t.appName}</h1>
               <p className="hidden truncate text-[12.5px] text-ink-3 sm:block">{t.tagline}</p>
