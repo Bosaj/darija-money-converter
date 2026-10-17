@@ -14,8 +14,11 @@
       try {
         var t = localStorage.getItem('dmc:theme')
         if (t) document.documentElement.dataset.theme = JSON.parse(t)
+        // same rule as initialLang() in App.tsx, applied before the first paint so the page never flips direction
         var l = JSON.parse(localStorage.getItem('dmc:lang') || 'null')
-        if (l) { document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr' }
+        if (!l) { var n = (navigator.language || '').toLowerCase(); l = n.indexOf('fr') === 0 ? 'fr' : n.indexOf('en') === 0 ? 'en' : 'ar' }
+        document.documentElement.lang = l
+        document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'
       } catch (e) {}
     </script>
   </head>
