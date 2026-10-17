@@ -39,7 +39,7 @@ In Morocco people quote prices in **rial**, **santim/franc** or **millions** —
 | **Every unit at once** | Dirham, rial, santim, million, milliard, doro — tap to copy. |
 | **Franc** | `500 فرنك` = 5 DH: the franc is the old name of the santim (1 DH = 100 francs since 1960). A switch in the region dialog makes it a whole dirham instead, for people who use it that way (flagged as unconfirmed). |
 | **Say it like a local** | Reverse conversion spelled the way a seller says it, in Arabic and Arabizi, with text-to-speech: 50 DH → "ألف ريال" / "alf ryal". |
-| **Regional presets** | General, Oriental (Oujda…), North (Tangier, Tetouan…) and a custom preset. Unverified values are flagged, with a one-click "correct this value" issue form. |
+| **Regional presets** | General, Oriental (Oujda, Berkane…), Rif (Nador, Al Hoceima: douro = 0.5 DH, `جوج د الميا` = 100 DH), North (Tangier, Tetouan…) and a custom preset. Unverified values are flagged, with a one-click "correct this value" issue form. |
 | **Voice input** | Dictate the price (Web Speech API, `ar-MA`), parsed by the same Darija engine. |
 | **Share cards** | One tap renders a 1080×1350 price card and opens the native share sheet (or downloads the PNG). |
 | **Euro, dollar & more** | `100 euro`, `50€`, `$20`, `ألف أورو`, plus GBP, CAD, CHF, SAR, AED. Two-word names such as `ريال سعودي` or `فرنك سويسري` don't clash with the Moroccan rial or franc. Live mid-market rates, cached for offline use, with a dated fallback. |
@@ -102,8 +102,10 @@ All ratios live in [`src/data/conventions.json`](src/data/conventions.json) — 
 | فرنك franc — "franc = dirham" switch | 1 | **unverified**, reported for French usage ([Remitly](https://www.remitly.com/blog/currencies/moroccan-dirham-facts-exchange-guide/), [Journey Beyond Travel](https://www.journeybeyondtravel.com/blog/currency.html)) |
 | مليون million (of santim) | 10,000 | verified |
 | مليار milliard (of santim) | 10,000,000 | verified |
-| دورو doro — Oriental preset | 0.05 | **unverified**, community-reported |
-| دورو doro — North preset | 0.5 | **unverified**, community-reported |
+| دورو doro — Oriental preset (Oujda, Berkane) | 0.05, same as a rial (1 DH = 20 douros) | **unverified**, community-reported |
+| دورو doro — Rif preset (Nador, Al Hoceima) | 0.5 = 10 rial (1 DH = 2 douros) | **unverified**, community-reported |
+| الميا mya (مية دورو) — Rif preset | 50 (= 100 douros = 1,000 rial) | **unverified**, community-reported |
+| دورو doro — North preset (Tangier, Tetouan) | 0.5 | **unverified**, community-reported |
 
 Know the value in your city? [Open a regional-value report](https://github.com/Bosaj/darija-money-converter/issues/new?template=regional-value.yml).
 
@@ -151,6 +153,7 @@ Requires Node 20+ (CI uses Node 24).
 - [x] v0.5 — euro/dollar & foreign currencies, coin logo, souk kit, calculator — [#6](https://github.com/Bosaj/darija-money-converter/issues/6)–[#11](https://github.com/Bosaj/darija-money-converter/issues/11)
 - [x] v0.6 — live rates API with trends, Moroccan-star coin, Darija voice in/out, place detection — [#13](https://github.com/Bosaj/darija-money-converter/issues/13)–[#16](https://github.com/Bosaj/darija-money-converter/issues/16)
 - [x] v0.7 — franc as its own unit with a franc = dirham switch, wrapped example chips, a Moroccan-money page background — [#18](https://github.com/Bosaj/darija-money-converter/issues/18)–[#20](https://github.com/Bosaj/darija-money-converter/issues/20)
+- [x] v0.8 — Rif region (Nador, Al Hoceima) with its douro and الميا, Oujda douro, Nador moved out of Oriental — [#22](https://github.com/Bosaj/darija-money-converter/issues/22)
 - [ ] Next — confirm doro (and any other local terms) city by city; a server speech model for Firefox, which has no Web Speech API.
 
 ---

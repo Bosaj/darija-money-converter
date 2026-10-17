@@ -159,13 +159,13 @@ export function Equivalents({ values, units, lang, t, presetLabel, onOpenRegion 
         }
       />
       <div className="grid grid-cols-2 gap-2.5">
-        {LOCAL_IDS.filter((id) => id !== 'franc').map((id) => {
+        {LOCAL_IDS.filter((id) => id !== 'franc' && (id !== 'mya' || units.mya.factor !== null)).map((id, i, list) => {
           const u = units[id]
           const alsoFranc = (id === 'santim' || id === 'dirham') && units.franc.factor === u.factor
           const v = values?.[id] ?? null
           const unavailable = u.factor === null
           return (
-            <div key={id} className={`relative flex min-h-[92px] flex-col justify-between rounded-[18px] border border-line p-3.5 ${unavailable ? 'bg-transparent' : 'bg-surface-2'}`}>
+            <div key={id} className={`relative flex min-h-[92px] flex-col justify-between rounded-[18px] border border-line p-3.5 ${unavailable ? 'bg-transparent' : 'bg-surface-2'} ${list.length % 2 && i === list.length - 1 ? 'col-span-2' : ''}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate text-[13.5px] font-semibold text-ink">{unitName(u, lang)}</p>
