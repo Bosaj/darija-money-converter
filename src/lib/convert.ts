@@ -76,6 +76,17 @@ export function sayIt(exact: number, units: ResolvedUnits): Phrase[] {
     phrases.push({ unit: 'million', ar: spellNumber(santim, 'ar'), latin: spellNumber(santim, 'latin') })
   }
 
+  // الميا (a hundred douros), Rif only: 100 DH = جوج د الميا
+  const mya = units.mya.factor ? dirham / units.mya.factor : null
+  if (mya !== null && isWhole(mya) && mya >= 1 && mya <= 1e5) {
+    const n = Math.round(mya)
+    phrases.push({
+      unit: 'mya',
+      ar: n === 1 ? 'ميا' : n === 2 ? 'جوج د الميا' : `${spellNumber(n, 'ar')} د الميا`,
+      latin: n === 1 ? 'mya' : n === 2 ? 'jouj d lmya' : `${spellNumber(n, 'latin')} d lmya`,
+    })
+  }
+
   // Doro, only where the region defines it
   const doro = units.doro.factor ? dirham / units.doro.factor : null
   if (doro !== null && isWhole(doro) && doro <= 1e7) {
