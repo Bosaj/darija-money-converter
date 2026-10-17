@@ -7,7 +7,7 @@
   --surface-2: #f7f0e5;
   --ink: #1d1b16;
   --ink-2: #5a5348;
-  --ink-3: #8b8274;
+  --ink-3: #6f675b;
   --line: rgb(70 50 20 / 0.12);
   --line-strong: rgb(70 50 20 / 0.2);
   --brand: #0f7b5f;
@@ -32,7 +32,7 @@
     --surface-2: #192521;
     --ink: #f1ece3;
     --ink-2: #b9b1a4;
-    --ink-3: #847c70;
+    --ink-3: #9b9385;
     --line: rgb(255 255 255 / 0.08);
     --line-strong: rgb(255 255 255 / 0.15);
     --brand: #36c592;
@@ -57,7 +57,7 @@
   --surface-2: #192521;
   --ink: #f1ece3;
   --ink-2: #b9b1a4;
-  --ink-3: #847c70;
+  --ink-3: #9b9385;
   --line: rgb(255 255 255 / 0.08);
   --line-strong: rgb(255 255 255 / 0.15);
   --brand: #36c592;
@@ -98,6 +98,7 @@
 }
 
 html {
+  scrollbar-gutter: stable;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
@@ -272,9 +273,8 @@ dialog[open] {
   --bd-glow-3: rgb(214 64 69 / 0.06);
 }
 
-.backdrop-glow {
-  position: absolute;
-  inset: -10%;
+/* glows are painted on the fixed layer itself: a box that never moves can't shift the layout */
+.backdrop {
   background:
     radial-gradient(40% 35% at 12% 8%, var(--bd-glow-1), transparent 70%),
     radial-gradient(38% 34% at 92% 90%, var(--bd-glow-2), transparent 70%),
