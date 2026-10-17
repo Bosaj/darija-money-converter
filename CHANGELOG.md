@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-17
+### Changed
+- New name: **Hsabli · حسبلي** ("count it for me"), formerly *Chhal?*. chhal.ma is an unrelated Moroccan calculator site, so the old name was confusing. hsabli.ma was free on the ANRT-accredited registrar wadi.ma at the time of the switch. The new name appears in the app (Arabic, French, English), page title, install name, share card, backdrop and README; the coin inscription is now Latin (HSABLI · DIRHAM), because browsers don't join Arabic letters on a curved path. The word شحال is still understood when people type it. (#28)
+
 ## [0.9.2] - 2026-10-17
 ### Fixed
 - Readex Pro (Arabic and Latin) is preloaded, so the header no longer reflows when the web font arrives on phones (mobile layout shift).

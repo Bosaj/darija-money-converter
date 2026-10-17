@@ -1,6 +1,6 @@
 # Darija Money Converter — Wiki
 
-> شحال؟ Chhal? — type or say a Moroccan price ("عشرين ألف ريال", "jouj dlmelyoun") and get Dirham, or the other way round. Offline PWA.
+> حسبلي Hsabli — type or say a Moroccan price ("عشرين ألف ريال", "jouj dlmelyoun") and get Dirham, or the other way round. Offline PWA.
 
 **Live app:** https://darija-money-converter.vercel.app
 
