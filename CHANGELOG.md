@@ -91,7 +91,13 @@ First working release: all four roadmap milestones (v0.1–v0.4).
 ### Added
 - Initial repository scaffold: README (with architecture, roadmap and an LLM-handoff section), LICENSE, .gitignore, CONTRIBUTING, issue/PR templates, and wiki pages.
 
-[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v0.6.0...HEAD
-[0.6.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.6.0
-[0.5.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.5.0
+[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.2...v1.0.0
+[0.9.2]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.1...v0.9.2
+[0.9.1]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.0...v0.9.1
+[0.9.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/Bosaj/darija-money-converter/releases/tag/v0.4.0
