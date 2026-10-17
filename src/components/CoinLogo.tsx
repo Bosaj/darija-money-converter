@@ -10,11 +10,12 @@ export const WEAVE = ['M20.3 -55.5 L32.7 -17.4', 'M59 2.2 L26.7 25.7', 'M16.2 56
  * edge and struck inscription, nickel centre with a raised, green-enamelled,
  * interlaced Moroccan star. Tap to flip.
  */
-export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }: { size?: number; label?: string; interactive?: boolean }) {
+export function CoinLogo({ size = 44, label = 'حسبلي', interactive = true }: { size?: number; label?: string; interactive?: boolean }) {
   const id = useId().replace(/:/g, '')
   const [spin, setSpin] = useState(0)
   const g = (name: string) => `${name}-${id}`
-  const inscription = `${label} · CHHAL · ${label} · DIRHAM ·`
+  // Latin only: browsers don't join Arabic letters on a curved textPath; the Arabic name is in the header
+  const inscription = 'HSABLI · DIRHAM · HSABLI · DIRHAM ·'
 
   const coin = (
     <svg viewBox="0 0 512 512" width={size} height={size} aria-hidden className="block">
@@ -116,7 +117,7 @@ export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }
       <span key={spin} className={`block ${spin ? 'coin-flip' : ''}`}>
         {coin}
       </span>
-      <button type="button" aria-label="Flip the coin" onClick={() => setSpin((s) => s + 1)} className="absolute inset-0 rounded-full" />
+      <button type="button" aria-label={`${label}: flip the coin`} onClick={() => setSpin((s) => s + 1)} className="absolute inset-0 rounded-full" />
     </span>
   )
 }

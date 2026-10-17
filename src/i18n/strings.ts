@@ -1,7 +1,7 @@
 import type { Lang } from '../lib/conventions'
 
 const ar = {
-  appName: 'شحال؟',
+  appName: 'حسبلي',
   tagline: 'حوّل الريال والسنتيم والمليون والأورو للدرهم — وبالعكس',
   inputLabel: 'كتب الثمن كيفما كتقولو',
   placeholder: 'مثلا: عشرين ألف ريال',
@@ -111,7 +111,7 @@ const ar = {
 export type Strings = typeof ar
 
 const fr: Strings = {
-  appName: 'Chhal ?',
+  appName: 'Hsabli',
   tagline: 'Rial, centime, million, euro → dirham, et inversement',
   inputLabel: 'Écrivez le prix comme on le dit',
   placeholder: 'ex. 3chrin alf ryal · عشرين ألف ريال',
@@ -219,7 +219,7 @@ const fr: Strings = {
 }
 
 const en: Strings = {
-  appName: 'Chhal?',
+  appName: 'Hsabli',
   tagline: 'Moroccan rial, centime, million & euro → dirham, and back',
   inputLabel: 'Type the price the way people say it',
   placeholder: 'e.g. 3chrin alf ryal · عشرين ألف ريال',

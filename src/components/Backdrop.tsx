@@ -48,7 +48,7 @@ const ITEMS: { item: Item; x: number; y: number; r: number; dur: number; delay: 
   { item: { kind: 'word', text: 'ريال', size: 46 }, x: 88, y: 38, r: -8, dur: 26, delay: -3 },
   { item: { kind: 'note', value: 50, width: 130 }, x: 2, y: 52, r: -18, dur: 30, delay: -12, wide: true },
   { item: { kind: 'coin', size: 44 }, x: 92, y: 66, r: 20, dur: 24, delay: -9 },
-  { item: { kind: 'word', text: 'شحال؟', size: 54 }, x: 10, y: 82, r: 6, dur: 27, delay: -15, wide: true },
+  { item: { kind: 'word', text: 'حسبلي', size: 54 }, x: 10, y: 82, r: 6, dur: 27, delay: -15, wide: true },
   { item: { kind: 'note', value: 100, width: 140 }, x: 72, y: 86, r: -10, dur: 32, delay: -4, wide: true },
   { item: { kind: 'word', text: 'فرنك', size: 34 }, x: 46, y: 94, r: 4, dur: 25, delay: -18 },
   { item: { kind: 'note', value: 20, width: 110 }, x: 40, y: 4, r: 8, dur: 29, delay: -20, wide: true },

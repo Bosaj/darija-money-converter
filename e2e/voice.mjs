@@ -1,4 +1,4 @@
-// End-to-end voice check for Chhal: fake microphone (Web Speech recognition) and fake speaker
+// End-to-end voice check for Hsabli: fake microphone (Web Speech recognition) and fake speaker
 // (speechSynthesis), every interface language and every mic language.
 // Run: npm run dev, then URL=http://localhost:5173/ npm run e2e:voice (CHROME=<path> to use a local Chrome).
 import { chromium } from 'playwright'

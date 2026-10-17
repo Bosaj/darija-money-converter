@@ -1,4 +1,6 @@
-# شحال؟ Chhal? — Darija Money Converter
+# حسبلي Hsabli — Darija Money Converter
+
+> **New name (2026-10-17):** this app was called *Chhal?* until v0.9. It is now **Hsabli · حسبلي** ("count it for me") because chhal.ma is an unrelated Moroccan calculator site. The URL and repository stay the same.
 
 > Type or say a price the way Moroccans say it — **"عشرين ألف ريال"**, **"جوج د المليون"**, **"3chrin alf ryal"**, **"100 euro"** — and get Dirham instantly. Works the other way round, keeps working offline, and comes with a souk kit for haggling, paying and learning.
 
@@ -9,7 +11,7 @@
 **Live:** https://darija-money-converter.vercel.app · **Status:** v0.6 — live rates API with trends, Moroccan-star coin, Darija voice in/out, place detection.
 **Author:** Oussama EL HADJI. Part of the Bosaj ideas portfolio (sibling repo: `dual_portfolio_hub`).
 
-<p align="center"><img src="docs/coin-logo.webp" alt="Chhal coin logo: bimetallic brass and nickel coin with an interlaced green Moroccan star" width="140" /></p>
+<p align="center"><img src="docs/coin-logo.webp" alt="Hsabli coin logo: bimetallic brass and nickel coin with an interlaced green Moroccan star" width="140" /></p>
 <p align="center">
   <img src="docs/screenshot-desktop-light.webp" alt="Desktop: '100 euro' converted to Dirham with say-it phrases, souk kit and foreign currencies" width="760" />
 </p>
