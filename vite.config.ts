@@ -53,8 +53,8 @@ export default defineConfig({
       pwaAssets: { config: true },
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Chhal? — Darija Money Converter',
-        short_name: 'Chhal?',
+        name: 'Hsabli · حسبلي — Darija Money Converter',
+        short_name: 'Hsabli',
         description: 'Convert Moroccan money slang (rial, santim, million, doro) to Dirham and back. Works offline.',
         lang: 'ar',
         theme_color: '#0f7b5f',

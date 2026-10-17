@@ -80,7 +80,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
   ctx.fillStyle = '#f2b847'
   ctx.font = `600 52px ${FONT}`
   ctx.direction = 'ltr'
-  ctx.fillText('شحال؟', W / 2 - 230, 118)
+  ctx.fillText('حسبلي', W / 2 - 230, 118)
   ctx.fillStyle = 'rgba(255,255,255,0.7)'
   ctx.font = `400 28px ${FONT}`
   ctx.fillText('Darija Money Converter', W / 2 - 230, 168)
@@ -137,7 +137,7 @@ export async function renderCard(d: CardData): Promise<Blob> {
 
 export async function shareCard(d: CardData, title: string): Promise<void> {
   const blob = await renderCard(d)
-  const file = new File([blob], 'chhal-price.png', { type: 'image/png' })
+  const file = new File([blob], 'hsabli-price.png', { type: 'image/png' })
   const nav = navigator as Navigator & { canShare?: (data: ShareData) => boolean }
   if (nav.share && nav.canShare?.({ files: [file] })) {
     try {
