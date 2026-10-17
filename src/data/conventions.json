@@ -118,7 +118,7 @@
         "frenk",
         "fernk"
       ],
-      "source": "Old name of the santim, 1/100 DH. The dirham replaced the Moroccan franc in 1960 at 100 francs = 1 DH and francs stayed the subdivision until the centime (santim) took over in 1974, so many people still count in francs (Wikipedia: Moroccan dirham). Some French speakers say 'franc' for a whole dirham (reported by remitly.com and journeybeyondtravel.com, not verified); switch it in Region settings."
+      "source": "Old name of the santim, 1/100 DH. The dirham replaced the Moroccan franc in 1960 at 100 francs = 1 DH and francs stayed the subdivision until the centime (santim) took over in 1974, so many people still count in francs, especially in the north (Nador, Al Hoceima, Tangier, Tetouan) (Wikipedia: Moroccan dirham). Some French speakers say 'franc' for a whole dirham (reported by remitly.com and journeybeyondtravel.com, not verified); switch it in Region settings."
     },
     "million": {
       "factor": 10000,
@@ -178,7 +178,30 @@
         "dourou",
         "dooro"
       ],
-      "source": "Region-dependent and not verified. Set per region preset; please report your city's value."
+      "source": "Two different douros: in the Rif (Nador, Al Hoceima) 1 douro = 50 santim = 10 rial (1 DH = 2 douros); in Oujda 1 douro = 5 santim, the same as a rial (1 DH = 20 douros). Reported in a Moroccan money guide shared by the project owner (2026-10-17); needs local confirmation."
+    },
+    "mya": {
+      "factor": null,
+      "verified": false,
+      "symbol": "ميا",
+      "names": {
+        "ar": "الميا",
+        "latin": "lmya",
+        "fr": "mya (100 douros)",
+        "en": "mya (100 doros)"
+      },
+      "plural": {
+        "ar": "الميا",
+        "latin": "lmya"
+      },
+      "aliases": [
+        "ميا",
+        "ميات",
+        "lmya",
+        "lmyat",
+        "elmya"
+      ],
+      "source": "Rif (Nador, Al Hoceima): الميا is short for مية دورو, a hundred douros = 50 DH = 1,000 rial. Reported in a Moroccan money guide shared by the project owner (2026-10-17); needs local confirmation."
     },
     "eur": {
       "factor": null,
@@ -416,15 +439,39 @@
         "en": "Oriental region"
       },
       "cities": {
-        "ar": "وجدة، بركان، الناظور",
-        "fr": "Oujda, Berkane, Nador",
-        "en": "Oujda, Berkane, Nador"
+        "ar": "وجدة، بركان، تاوريرت، جرادة",
+        "fr": "Oujda, Berkane, Taourirt, Jerada",
+        "en": "Oujda, Berkane, Taourirt, Jerada"
       },
       "overrides": {
         "doro": {
           "factor": 0.05,
           "verified": false,
-          "note": "Community-reported: douro = 5 santim (same as rial), like the Algerian douro. Needs local confirmation."
+          "note": "Oujda douro = 5 santim, the same as a rial (1 DH = 20 douros). Reported in a Moroccan money guide shared by the project owner (2026-10-17); needs local confirmation."
+        }
+      }
+    },
+    "rif": {
+      "names": {
+        "ar": "الريف",
+        "fr": "Rif",
+        "en": "Rif"
+      },
+      "cities": {
+        "ar": "الناظور، الحسيمة، الدريوش، زايو",
+        "fr": "Nador, Al Hoceïma, Driouch, Zaïo",
+        "en": "Nador, Al Hoceima, Driouch, Zaio"
+      },
+      "overrides": {
+        "doro": {
+          "factor": 0.5,
+          "verified": false,
+          "note": "Rif douro = 50 santim = 10 rial (1 DH = 2 douros). Reported in a Moroccan money guide shared by the project owner (2026-10-17); needs local confirmation."
+        },
+        "mya": {
+          "factor": 50,
+          "verified": false,
+          "note": "الميا = مية دورو = 50 DH = 1,000 rial. Reported in a Moroccan money guide shared by the project owner (2026-10-17); needs local confirmation."
         }
       }
     },

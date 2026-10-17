@@ -99,6 +99,11 @@ export function RegionDialog({ place, onDetect, open, onClose, preset, onPreset,
                 </span>
                 <span className="shrink-0 text-end text-[12px] text-ink-2">
                   {UNITS.doro.names[lang]}: <span dir="ltr" className="tabular inline-block font-semibold">{doro ? `${fmt(doro, lang)} DH` : '—'}</span>
+                  {o.overrides.mya?.factor ? (
+                    <span className="block">
+                      {UNITS.mya.names.ar}: <span dir="ltr" className="tabular inline-block font-semibold">{fmt(o.overrides.mya.factor, lang)} DH</span>
+                    </span>
+                  ) : null}
                 </span>
               </button>
             )

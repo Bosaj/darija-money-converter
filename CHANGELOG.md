@@ -4,6 +4,15 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-17
+### Added
+- Rif region preset (Nador, Al Hoceima, Driouch, Zaio, Imzouren): 1 douro = 50 santim = 10 rial (1 DH = 2 douros), and the new unit **الميا** (short for مية دورو) = 50 DH = 1,000 rial, so `جوج د الميا` = 100 DH. "Say it like a local" adds the الميا phrase there. Both values are flagged unverified. (#22)
+- `GET /api/convert?region=rif`.
+
+### Changed
+- Oriental preset is now Oujda, Berkane, Taourirt, Jerada (douro = 5 santim, the same as a rial); Nador, Al Hoceima and Driouch detect as Rif.
+- The equivalents grid shows الميا only where it exists, and an odd last cell spans the full row.
+
 ## [0.7.0] - 2026-10-10
 ### Added
 - The franc is its own unit: `500 فرنك` = 5 DH, with a "What is a franc?" switch in the region dialog (franc = centime by default, or franc = dirham, flagged as unconfirmed). The equivalents grid names the franc next to the santim, and `GET /api/convert` takes `franc=santim|dirham`. (#19)

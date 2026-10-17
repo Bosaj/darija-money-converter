@@ -1,14 +1,14 @@
 import raw from '../data/conventions.json' with { type: 'json' }
 import type { MadRates } from './rates.js'
 
-export const LOCAL_IDS = ['dirham', 'rial', 'santim', 'franc', 'million', 'mlyar', 'doro'] as const
+export const LOCAL_IDS = ['dirham', 'rial', 'santim', 'franc', 'million', 'mlyar', 'doro', 'mya'] as const
 export const FOREIGN_IDS = ['eur', 'usd', 'gbp', 'cad', 'chf', 'sar', 'aed'] as const
 export const UNIT_IDS = [...LOCAL_IDS, ...FOREIGN_IDS] as const
 export type LocalId = (typeof LOCAL_IDS)[number]
 export type ForeignId = (typeof FOREIGN_IDS)[number]
 export type UnitId = LocalId | ForeignId
 
-export type PresetId = 'general' | 'oriental' | 'north' | 'custom'
+export type PresetId = 'general' | 'oriental' | 'rif' | 'north' | 'custom'
 export type Lang = 'ar' | 'fr' | 'en'
 /** What "franc" means: the santim (1/100 DH, the historical meaning) or a whole dirham (some French speakers). */
 export type FrancMode = 'santim' | 'dirham'
