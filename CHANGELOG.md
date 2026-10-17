@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-10-17
+### Fixed
+- The page language and direction (rtl/ltr) are set by an inline script before the first paint, using the same rule as the app. The French/English flip from the Arabic default used to move the whole page (CLS 0.8 on desktop).
+- The coin's flip button is a transparent overlay, so its accessible name is clean (the embossed inscription is drawn three times).
+- The "درهم / DH" unit next to the result is no longer dimmed (contrast 3.97:1 → 7:1).
+
 ## [0.9.0] - 2026-10-17
 ### Changed
 - "Read the result aloud" speaks the interface language: Darija in Arabic, a French voice in French ("Cela fait 1 000 dirhams."), an English voice in English. The saved Arabic voice is only used for Arabic; Darija phrases stay Darija. (#24)
