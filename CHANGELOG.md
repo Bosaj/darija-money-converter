@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-17
+### Changed
+- "Read the result aloud" speaks the interface language: Darija in Arabic, a French voice in French ("Cela fait 1 000 dirhams."), an English voice in English. The saved Arabic voice is only used for Arabic; Darija phrases stay Darija. (#24)
+
+### Fixed
+- Layout shift (CLS 0.81 → ~0) from the background glow: it was sized to the window, so the scrollbar appearing moved it. Glows are painted on the fixed layer and the scrollbar gutter is reserved. (#24)
+- Secondary text contrast now passes WCAG AA in both themes (light 5.5:1, dark 5.7:1); the result label is no longer dimmed. (#24)
+- The coin button's accessible name includes its visible inscription. (#24)
+
+### Added
+- `npm run e2e:voice`: end-to-end voice check with a fake microphone and speaker. It covers typed text, all four mic languages (Darija, Standard Arabic, French, English) with live words, read-aloud voices per interface language, Darija phrases and mic-permission errors in Arabic, French and English: 25 checks. (#24)
+
 ## [0.8.0] - 2026-10-17
 ### Added
 - Rif region preset (Nador, Al Hoceima, Driouch, Zaio, Imzouren): 1 douro = 50 santim = 10 rial (1 DH = 2 douros), and the new unit **الميا** (short for مية دورو) = 50 DH = 1,000 rial, so `جوج د الميا` = 100 DH. "Say it like a local" adds the الميا phrase there. Both values are flagged unverified. (#22)

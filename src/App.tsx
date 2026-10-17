@@ -247,8 +247,12 @@ export default function App() {
                 onShare={onShare}
                 foreignNote={Boolean(parsed?.segments.some((x) => isForeign(x.unit)))}
                 onRead={() => {
-                  const said = phrases.find((x) => x.unit === 'dirham')?.ar
-                  if (said) speak(`${text.trim()}، ${STRINGS.ar.means} ${said}`)
+                  if (dirham === null) return
+                  // Darija in the Arabic interface; French or English voices otherwise
+                  if (lang === 'ar') {
+                    const said = phrases.find((x) => x.unit === 'dirham')?.ar
+                    if (said) speak(`${text.trim()}، ${STRINGS.ar.means} ${said}`)
+                  } else speak(t.readOut(fmt(dirham, lang)), { lang: lang === 'fr' ? 'fr-FR' : 'en-US' })
                 }}
               />
               {!text.trim() && <EmptyHint t={t} />}

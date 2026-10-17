@@ -60,7 +60,6 @@ const ITEMS: { item: Item; x: number; y: number; r: number; dur: number; delay: 
 export function Backdrop() {
   return (
     <div aria-hidden className="backdrop pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="backdrop-glow" />
       <div className="backdrop-tiles" />
       {ITEMS.map(({ item, x, y, r, dur, delay, wide }, i) => (
         <div
