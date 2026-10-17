@@ -111,16 +111,12 @@ export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }
 
   if (!interactive) return coin
   return (
-    <button
-      type="button"
-      aria-label={`${inscription} flip the coin`}
-      onClick={() => setSpin((s) => s + 1)}
-      className="coin-wrap shrink-0 rounded-full drop-shadow-[0_6px_10px_rgb(90_60_10/0.35)]"
-      style={{ width: size, height: size }}
-    >
+    // the coin's embossed inscription is drawn several times; keep it out of the button so its name stays clean
+    <span className="coin-wrap relative block shrink-0 rounded-full drop-shadow-[0_6px_10px_rgb(90_60_10/0.35)]" style={{ width: size, height: size }}>
       <span key={spin} className={`block ${spin ? 'coin-flip' : ''}`}>
         {coin}
       </span>
-    </button>
+      <button type="button" aria-label="Flip the coin" onClick={() => setSpin((s) => s + 1)} className="absolute inset-0 rounded-full" />
+    </span>
   )
 }

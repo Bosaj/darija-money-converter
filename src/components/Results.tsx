@@ -68,7 +68,7 @@ export function ResultHero({ dirham, lang, t, onShare, foreignNote, onRead }: He
           <p className="text-[13px] font-semibold">{t.inDirham}</p>
           <p key={text} className={`pop tabular mt-1 whitespace-nowrap font-semibold leading-[1.05] tracking-tight ${text.length > 10 ? 'text-[28px] sm:text-[44px]' : text.length > 7 ? 'text-[34px] sm:text-[50px]' : 'text-[40px] sm:text-[56px]'}`} aria-live="polite">
             {text}
-            <span className="ms-2 text-[18px] font-medium opacity-80 sm:text-[24px]">{lang === 'ar' ? 'درهم' : 'DH'}</span>
+            <span className="ms-2 text-[18px] font-medium sm:text-[24px]">{lang === 'ar' ? 'درهم' : 'DH'}</span>
           </p>
         </div>
         <div className="ms-auto flex shrink-0 gap-1.5">
