@@ -83,6 +83,7 @@ const ar = {
   noArabicVoice: 'ما كاينش صوت عربي فهاد الجهاز. فويندوز: الإعدادات ← الوقت واللغة ← الكلام ← زيد صوت عربي (المغرب). فأندرويد: إعدادات تحويل النص لكلام.',
   readResult: 'قرا النتيجة بالصوت',
   means: 'يعني',
+  readOut: (n: string) => `يعني ${n} درهم`,
   sttUnsupported: 'هاد المتصفح ما كيدعمش الإملاء بالصوت. جرب Chrome ولا Edge ولا Safari.',
   sttError: {
     permission: 'خاصك تسمح للميكرو باش تهضر.',
@@ -192,6 +193,7 @@ const fr: Strings = {
   noArabicVoice: 'Aucune voix arabe sur cet appareil. Windows : Paramètres → Heure et langue → Voix → ajouter Arabe (Maroc). Android : réglages de synthèse vocale.',
   readResult: 'Lire le résultat à voix haute',
   means: 'soit',
+  readOut: (n: string) => `Cela fait ${n} dirhams.`,
   sttUnsupported: 'Ce navigateur ne gère pas la dictée. Essayez Chrome, Edge ou Safari.',
   sttError: {
     permission: 'Autorisez le micro pour dicter.',
@@ -299,6 +301,7 @@ const en: Strings = {
   noArabicVoice: 'No Arabic voice on this device. Windows: Settings → Time & language → Speech → add Arabic (Morocco). Android: text-to-speech settings.',
   readResult: 'Read the result aloud',
   means: 'that is',
+  readOut: (n: string) => `That's ${n} dirhams.`,
   sttUnsupported: 'This browser can’t do dictation. Try Chrome, Edge or Safari.',
   sttError: {
     permission: 'Allow the microphone to dictate.',

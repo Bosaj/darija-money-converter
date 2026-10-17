@@ -65,7 +65,7 @@ export function ResultHero({ dirham, lang, t, onShare, foreignNote, onRead }: He
       <div className="zellige !opacity-[0.12]" style={{ color: 'var(--brand-ink)' }} aria-hidden />
       <div className="relative flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
         <div className="max-w-full">
-          <p className="text-[13px] font-medium opacity-80">{t.inDirham}</p>
+          <p className="text-[13px] font-semibold">{t.inDirham}</p>
           <p key={text} className={`pop tabular mt-1 whitespace-nowrap font-semibold leading-[1.05] tracking-tight ${text.length > 10 ? 'text-[28px] sm:text-[44px]' : text.length > 7 ? 'text-[34px] sm:text-[50px]' : 'text-[40px] sm:text-[56px]'}`} aria-live="polite">
             {text}
             <span className="ms-2 text-[18px] font-medium opacity-80 sm:text-[24px]">{lang === 'ar' ? 'درهم' : 'DH'}</span>

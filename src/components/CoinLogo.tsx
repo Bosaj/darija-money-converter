@@ -113,7 +113,7 @@ export function CoinLogo({ size = 44, label = 'شحال؟', interactive = true }
   return (
     <button
       type="button"
-      aria-label="Flip the coin"
+      aria-label={`${inscription} flip the coin`}
       onClick={() => setSpin((s) => s + 1)}
       className="coin-wrap shrink-0 rounded-full drop-shadow-[0_6px_10px_rgb(90_60_10/0.35)]"
       style={{ width: size, height: size }}
