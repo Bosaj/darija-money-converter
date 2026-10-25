@@ -9,7 +9,7 @@
 ![PWA](https://img.shields.io/badge/PWA-offline--ready-0f7b5f)
 
 **Live:** https://darija-money-converter.vercel.app · **Status:** v0.6 — live rates API with trends, Moroccan-star coin, Darija voice in/out, place detection.
-**Author:** Oussama EL HADJI. Part of the Bosaj ideas portfolio (sibling repo: `dual_portfolio_hub`).
+**Author:** Oussama Elhadji (`@Bosaj`) <oussousselhadji@gmail.com>.
 
 <p align="center"><img src="docs/coin-logo.webp" alt="Hsabli coin logo: bimetallic brass and nickel coin with an interlaced green Moroccan star" width="140" /></p>
 <p align="center">
@@ -168,6 +168,7 @@ Requires Node 20+ (CI uses Node 24).
 
 **Ground rules:** keep this README in sync with reality; write tests for anything correctness-critical; never commit secrets; follow Conventional Commits (see `CONTRIBUTING.md`).
 
-## License
+## 📄 License
+**Proprietary & Commercial Software License** — All Rights Reserved © 2026 Oussama Elhadji (`@Bosaj`) <[oussousselhadji@gmail.com](mailto:oussousselhadji@gmail.com)>.
 
-[MIT](LICENSE) — © 2026 Oussama EL HADJI
+Unauthorized copying, distribution, resale, or reverse engineering is strictly prohibited. See [LICENSE](LICENSE) for full legal terms.
