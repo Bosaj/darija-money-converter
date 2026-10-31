@@ -4,6 +4,13 @@ All notable changes to this project are documented here. Format: [Keep a Changel
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-31
+### Added
+- Money through time: the background shows Moroccan money one era at a time, today's series first, then from the oldest forward. The eras are the Hassani rial (1882–1920), Moroccan franc (1921–1959), first dirhams (1960–1986) and the 1987, 2002, 2013 and 2023–2024 series. There are 72 notes and coins, each drawn in its true colour, size ratio, value and metal (bimetallic rings included), with its main motif. Wide screens show the era's years and name in the side gutter. The catalogue lives in `src/data/money.ts`. (#32)
+
+### Changed
+- Background pieces sit in the side gutters, where the cards don't cover them, and are a little stronger. On phones they are smaller and fewer, and under reduced motion one era stays still. (#32)
+
 ## [1.0.0] - 2026-10-17
 ### Changed
 - New name: **Hsabli · حسبلي** ("count it for me"), formerly *Chhal?*. chhal.ma is an unrelated Moroccan calculator site, so the old name was confusing. hsabli.ma was free on the ANRT-accredited registrar wadi.ma at the time of the switch. The new name appears in the app (Arabic, French, English), page title, install name, share card, backdrop and README; the coin inscription is now Latin (HSABLI · DIRHAM), because browsers don't join Arabic letters on a curved path. The word شحال is still understood when people type it. (#28)
@@ -91,7 +98,8 @@ First working release: all four roadmap milestones (v0.1–v0.4).
 ### Added
 - Initial repository scaffold: README (with architecture, roadmap and an LLM-handoff section), LICENSE, .gitignore, CONTRIBUTING, issue/PR templates, and wiki pages.
 
-[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Bosaj/darija-money-converter/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Bosaj/darija-money-converter/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.2...v1.0.0
 [0.9.2]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.1...v0.9.2
 [0.9.1]: https://github.com/Bosaj/darija-money-converter/compare/v0.9.0...v0.9.1

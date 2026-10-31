@@ -171,7 +171,7 @@ export default function App() {
 
   return (
     <div className="min-h-dvh">
-      <Backdrop />
+      <Backdrop lang={lang} />
       <div className="relative">
         <header className="relative mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pb-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6">
           <div className="flex min-w-0 items-center gap-3">

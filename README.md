@@ -26,6 +26,10 @@
   <img src="docs/voice-settings.webp" alt="Voice settings: mic language and Arabic reading voice" width="260" />
 </p>
 
+<p align="center">
+  <img src="docs/money-through-time.webp" alt="Every era of Moroccan money drawn for the background: Hassani rial coins and notes, Banque d'État du Maroc franc notes and coins, and the dirham series of 1960, 1987, 2002, 2013 and 2023" width="760" />
+</p>
+
 ---
 
 ## Problem
@@ -47,6 +51,7 @@ In Morocco people quote prices in **rial**, **santim/franc** or **millions** —
 | **Euro, dollar & more** | `100 euro`, `50€`, `$20`, `ألف أورو`, plus GBP, CAD, CHF, SAR, AED. Two-word names such as `ريال سعودي` or `فرنك سويسري` don't clash with the Moroccan rial or franc. Live mid-market rates, cached for offline use, with a dated fallback. |
 | **Calculator** | `3 x 15 dh`, `500 ريال × 4`: the quantity shows in the "understood" line. |
 | **Souk kit** | *Haggle*: −10/−20/−30% counter-offers spoken in Darija ("نعطيك …") plus useful phrases. *Pay*: the fewest notes and coins to hand over. *Learn*: a cheat sheet and a price quiz with a streak counter. |
+| **Money through time** | The background shows the notes and coins of one era at a time, today's series first: Hassani rial (1882), Moroccan franc (1921), first dirhams (1960), and the 1987, 2002, 2013 and 2023–2024 series. That makes 72 pieces, each drawn in its true colour, size ratio, value and metal (silver, bronze, brass, nickel, bimetallic), with its main motif (Hassan II Mosque, Ouzoud Falls, Tanger Med, Mohammed VI Bridge, the Seal of Solomon on Hassani coins…). They are drawn rather than photographed: the notes carry the King's portrait, which can't be reproduced without Bank Al-Maghrib's authorisation, so a landmark takes its place. |
 | **Coin logo** | A bimetallic coin in the spirit of the 10 DH piece: brass ring, nickel centre, reeded edge, struck inscription and a raised, green-enamelled **interlaced Moroccan star**. It flips when tapped. There is deliberately no royal portrait: the King's image is legally protected and a portrait side would imitate real currency. |
 | **Live rates & trends** | Each currency shows its rate, the ▲/▼ change against yesterday and a 30-day sparkline. Rates refresh every 15 minutes while the app is open, are cached for offline use, and are served by the app's own API. |
 | **Voice in Darija** | The mic speaks Darija (ar-MA), Standard Arabic, French or English, with live text and a level meter. The parser also reads what speech engines output: `عشرون ألف`, `ثلاثمائة`, `quatre-vingt-dix`, `fifteen thousand`. Text-to-speech prefers a Moroccan voice (e.g. Edge's ar-MA neural voices) and has a voice and speed picker plus "read the result". |
@@ -116,6 +121,7 @@ Know the value in your city? [Open a regional-value report](https://github.com/B
 ```
 src/
   data/conventions.json   units, aliases, regional presets (the only place ratios live)
+  data/money.ts           every era of Moroccan notes and coins, for the background
   lib/normalize.ts        Arabic/Latin normalisation (أ/إ/آ, ة/ه, harakat, Eastern digits)
   lib/lexicon.ts          Darija number words + clitic peeling (و ب ال د ل)
   lib/parse.ts            free text → [{amount, unit, implied}] segments
@@ -130,10 +136,11 @@ api/
   convert.ts              Darija parser as a JSON API (Vercel Function)
   lib/souk.ts             haggle offers, cash breakdown, cheat sheet, quiz
   components/, App.tsx    React UI (Tailwind v4, RTL-first)
+  components/money/       drawn notes, coins and motif line art
 ```
 
 - **No backend.** Everything runs client-side; the service worker precaches the app and fonts (Readex Pro, self-hosted).
-- **Correctness first.** 120 tests, including round trips: every number the speller writes, every haggle offer and every quiz question must parse back to the same amount.
+- **Correctness first.** 140 tests, including round trips: every number the speller writes, every haggle offer and every quiz question must parse back to the same amount.
 
 ## Getting started
 
@@ -156,6 +163,9 @@ Requires Node 20+ (CI uses Node 24).
 - [x] v0.6 — live rates API with trends, Moroccan-star coin, Darija voice in/out, place detection — [#13](https://github.com/Bosaj/darija-money-converter/issues/13)–[#16](https://github.com/Bosaj/darija-money-converter/issues/16)
 - [x] v0.7 — franc as its own unit with a franc = dirham switch, wrapped example chips, a Moroccan-money page background — [#18](https://github.com/Bosaj/darija-money-converter/issues/18)–[#20](https://github.com/Bosaj/darija-money-converter/issues/20)
 - [x] v0.8 — Rif region (Nador, Al Hoceima) with its douro and الميا, Oujda douro, Nador moved out of Oriental — [#22](https://github.com/Bosaj/darija-money-converter/issues/22)
+- [x] v0.9 — read-aloud in every interface language, AA contrast, zero layout shift, `npm run e2e:voice` — [#24](https://github.com/Bosaj/darija-money-converter/issues/24)
+- [x] v1.0 — new name **Hsabli · حسبلي** — [#28](https://github.com/Bosaj/darija-money-converter/issues/28)
+- [x] v1.1 — money through time: notes and coins of every era (1882 → 2024) in the background — [#32](https://github.com/Bosaj/darija-money-converter/issues/32)
 - [ ] Next — confirm doro (and any other local terms) city by city; a server speech model for Firefox, which has no Web Speech API.
 
 ---

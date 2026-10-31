@@ -1,81 +1,104 @@
+import { useEffect, useState } from 'react'
+import { ERA_SEQUENCE, eraAtStep, type Era, type Piece } from '../data/money'
+import type { Lang } from '../lib/conventions'
+import { Banknote, Coin, MoneyDefs } from './money/MoneyArt'
+
 /**
  * Page background: a full-page zellige field, warm glows in the flag's green and the coin's gold,
- * and slowly drifting Moroccan money (10 DH coins, 20/50/100/200 DH notes, the words people say).
- * Purely decorative: fixed, aria-hidden, no pointer events, still under prefers-reduced-motion.
+ * and the notes and coins of one era of Moroccan money drifting slowly. The era changes every few
+ * seconds, today's series first, then from the Hassani rial (1882) forward (src/data/money.ts).
+ * Purely decorative: fixed, aria-hidden, no pointer events; one still era under prefers-reduced-motion.
  */
 
-const STAR = 'M0 -10 L5.9 8.1 L-9.5 -3.1 L9.5 -3.1 L-5.9 8.1 Z'
+export const ERA_MS = 14_000
+const FADE_MS = 1_600
 
-function Coin({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="-24 -24 48 48">
-      <circle r="23" fill="var(--bd-silver)" />
-      <circle r="16.5" fill="var(--bd-gold)" />
-      <circle r="16.5" fill="none" stroke="var(--bd-line)" strokeWidth="0.8" />
-      <circle r="21" fill="none" stroke="var(--bd-line)" strokeWidth="0.6" strokeDasharray="1.2 1.6" />
-      <path d={STAR} fill="none" stroke="var(--bd-line)" strokeWidth="1.4" strokeLinejoin="round" />
-    </svg>
-  )
-}
+/** px per mm: notes near life size, coins enlarged so their faces read. */
+const NOTE_SCALE = 1
+const COIN_SCALE = 2.1
 
-/** Banknote silhouettes in the 2013-series colours (20 violet, 50 green, 100 brown, 200 blue). */
-const NOTE_TINT: Record<number, string> = { 20: '#8a63c9', 50: '#3f9a6b', 100: '#b0743a', 200: '#3f74c4' }
-
-function Note({ value, width }: { value: 20 | 50 | 100 | 200; width: number }) {
-  const tint = NOTE_TINT[value]
-  return (
-    <svg width={width} height={width * 0.5} viewBox="0 0 120 60">
-      <rect x="1" y="1" width="118" height="58" rx="6" fill={tint} fillOpacity="0.55" stroke={tint} strokeWidth="1.5" />
-      <rect x="7" y="7" width="106" height="46" rx="3" fill="none" stroke="var(--bd-paper)" strokeOpacity="0.7" strokeDasharray="2 2" />
-      <circle cx="88" cy="30" r="14" fill="var(--bd-paper)" fillOpacity="0.35" />
-      <path d={STAR} transform="translate(88 30) scale(0.9)" fill="none" stroke="var(--bd-paper)" strokeWidth="1.6" />
-      <text x="14" y="38" fontSize="20" fontWeight="700" fill="var(--bd-paper)" fontFamily="system-ui, sans-serif">
-        {value}
-      </text>
-    </svg>
-  )
-}
-
-type Item =
-  | { kind: 'coin'; size: number }
-  | { kind: 'note'; value: 20 | 50 | 100 | 200; width: number }
-  | { kind: 'word'; text: string; size: number }
-
-/* Positions in % of the viewport; `wide` items only show from the sm breakpoint so phones stay calm. */
-const ITEMS: { item: Item; x: number; y: number; r: number; dur: number; delay: number; wide?: boolean }[] = [
-  { item: { kind: 'coin', size: 64 }, x: 6, y: 16, r: -12, dur: 22, delay: 0 },
-  { item: { kind: 'note', value: 200, width: 150 }, x: 82, y: 10, r: 14, dur: 28, delay: -6, wide: true },
-  { item: { kind: 'word', text: 'ريال', size: 46 }, x: 88, y: 38, r: -8, dur: 26, delay: -3 },
-  { item: { kind: 'note', value: 50, width: 130 }, x: 2, y: 52, r: -18, dur: 30, delay: -12, wide: true },
-  { item: { kind: 'coin', size: 44 }, x: 92, y: 66, r: 20, dur: 24, delay: -9 },
-  { item: { kind: 'word', text: 'حسبلي', size: 54 }, x: 10, y: 82, r: 6, dur: 27, delay: -15, wide: true },
-  { item: { kind: 'note', value: 100, width: 140 }, x: 72, y: 86, r: -10, dur: 32, delay: -4, wide: true },
-  { item: { kind: 'word', text: 'فرنك', size: 34 }, x: 46, y: 94, r: 4, dur: 25, delay: -18 },
-  { item: { kind: 'note', value: 20, width: 110 }, x: 40, y: 4, r: 8, dur: 29, delay: -20, wide: true },
-  { item: { kind: 'word', text: 'درهم', size: 38 }, x: 24, y: 34, r: -14, dur: 31, delay: -7, wide: true },
-  { item: { kind: 'coin', size: 36 }, x: 60, y: 58, r: 0, dur: 23, delay: -11, wide: true },
-  { item: { kind: 'word', text: 'مليون', size: 32 }, x: 64, y: 24, r: 10, dur: 34, delay: -2, wide: true },
+/* Positions in % of the viewport, mostly in the side gutters where the cards don't cover them.
+   Phones only show the slots without `wide`, so they stay calm. */
+const SLOTS: { x: number; y: number; r: number; dur: number; delay: number; wide?: boolean }[] = [
+  { x: 5, y: 18, r: -12, dur: 22, delay: 0 },
+  { x: 95, y: 12, r: 14, dur: 28, delay: -6, wide: true },
+  { x: 96, y: 40, r: -8, dur: 26, delay: -3 },
+  { x: 4, y: 44, r: -18, dur: 30, delay: -12, wide: true },
+  { x: 94, y: 66, r: 16, dur: 24, delay: -9 },
+  { x: 7, y: 66, r: 10, dur: 34, delay: -2, wide: true },
+  { x: 52, y: 3, r: 4, dur: 29, delay: -20, wide: true },
+  { x: 97, y: 89, r: -10, dur: 32, delay: -4, wide: true },
+  { x: 50, y: 98, r: 0, dur: 23, delay: -11 },
+  { x: 10, y: 31, r: -14, dur: 31, delay: -7, wide: true },
+  { x: 90, y: 25, r: 8, dur: 27, delay: -15, wide: true },
+  { x: 91, y: 53, r: -6, dur: 25, delay: -18, wide: true },
 ]
 
-export function Backdrop() {
+function PieceArt({ piece }: { piece: Piece }) {
+  return piece.kind === 'note' ? (
+    <Banknote note={piece} width={piece.size[0] * NOTE_SCALE} />
+  ) : (
+    <Coin coin={piece} size={piece.d * COIN_SCALE} />
+  )
+}
+
+function EraLayer({ era, lang, phase }: { era: Era; lang: Lang; phase: 'in' | 'out' | 'still' }) {
+  return (
+    <div className={`era-layer era-${phase}`} data-era={era.id}>
+      {SLOTS.map(({ x, y, r, dur, delay, wide }, i) => {
+        const piece = era.pieces[i]
+        if (!piece) return null
+        return (
+          <div
+            key={piece.id}
+            className={`backdrop-float absolute ${wide ? 'hidden sm:block' : ''}`}
+            style={{ left: `${x}%`, top: `${y}%`, ['--r' as string]: `${r}deg`, animationDuration: `${dur}s`, animationDelay: `${delay}s` }}
+          >
+            <PieceArt piece={piece} />
+          </div>
+        )
+      })}
+      <div className="era-caption">
+        <div className="era-years" dir="ltr">
+          <span>{era.from}</span>
+          {era.to !== null && <span>{era.to}</span>}
+        </div>
+        <div className="era-name">{era.name[lang]}</div>
+      </div>
+    </div>
+  )
+}
+
+const stillPreferred = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true
+
+/** The era on screen and the one fading out. */
+function useEra() {
+  const [state, setState] = useState<{ step: number; leaving: Era | null }>({ step: 0, leaving: null })
+  useEffect(() => {
+    if (stillPreferred()) return
+    let fade: ReturnType<typeof setTimeout> | undefined
+    const tick = setInterval(() => {
+      if (document.hidden) return
+      setState((s) => ({ step: (s.step + 1) % ERA_SEQUENCE.length, leaving: eraAtStep(s.step) }))
+      clearTimeout(fade)
+      fade = setTimeout(() => setState((s) => ({ ...s, leaving: null })), FADE_MS)
+    }, ERA_MS)
+    return () => {
+      clearInterval(tick)
+      clearTimeout(fade)
+    }
+  }, [])
+  return { era: eraAtStep(state.step), leaving: state.leaving, changed: state.step !== 0 || state.leaving !== null }
+}
+
+export function Backdrop({ lang = 'ar' }: { lang?: Lang }) {
+  const { era, leaving, changed } = useEra()
   return (
     <div aria-hidden className="backdrop pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <div className="backdrop-tiles" />
-      {ITEMS.map(({ item, x, y, r, dur, delay, wide }, i) => (
-        <div
-          key={i}
-          className={`backdrop-float absolute ${wide ? 'hidden sm:block' : ''}`}
-          style={{ left: `${x}%`, top: `${y}%`, ['--r' as string]: `${r}deg`, animationDuration: `${dur}s`, animationDelay: `${delay}s` }}
-        >
-          {item.kind === 'coin' && <Coin size={item.size} />}
-          {item.kind === 'note' && <Note value={item.value} width={item.width} />}
-          {item.kind === 'word' && (
-            <span dir="rtl" className="block font-bold leading-none text-[var(--bd-word)]" style={{ fontSize: item.size }}>
-              {item.text}
-            </span>
-          )}
-        </div>
-      ))}
+      <MoneyDefs />
+      {leaving && <EraLayer key={leaving.id} era={leaving} lang={lang} phase="out" />}
+      <EraLayer key={era.id} era={era} lang={lang} phase={changed ? 'in' : 'still'} />
     </div>
   )
 }
