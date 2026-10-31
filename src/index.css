@@ -239,6 +239,7 @@ dialog[open] {
 /* ---------- Page backdrop (Backdrop.tsx) ---------- */
 :root {
   --bd-opacity: 0.16;
+  --bd-money: 0.34;
   --bd-gold: #e2b450;
   --bd-silver: #d9d4c8;
   --bd-line: #6b5426;
@@ -251,6 +252,7 @@ dialog[open] {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --bd-opacity: 0.13;
+    --bd-money: 0.26;
     --bd-gold: #c9962c;
     --bd-silver: #8d8a80;
     --bd-line: #2a2110;
@@ -263,6 +265,7 @@ dialog[open] {
 }
 :root[data-theme='dark'] {
   --bd-opacity: 0.13;
+  --bd-money: 0.26;
   --bd-gold: #c9962c;
   --bd-silver: #8d8a80;
   --bd-line: #2a2110;
@@ -295,19 +298,79 @@ dialog[open] {
 }
 
 .backdrop-float {
-  opacity: var(--bd-opacity);
-  transform: translate(-50%, -50%) rotate(var(--r));
+  --s: 0.72;
+  opacity: var(--bd-money);
+  transform: translate(-50%, -50%) rotate(var(--r)) scale(var(--s));
   animation: drift ease-in-out infinite alternate;
   will-change: transform;
+}
+@media (min-width: 640px) {
+  .backdrop-float {
+    --s: 1;
+  }
 }
 
 @keyframes drift {
   from {
-    transform: translate(-50%, -50%) rotate(var(--r));
+    transform: translate(-50%, -50%) rotate(var(--r)) scale(var(--s));
   }
   to {
-    transform: translate(-50%, calc(-50% - 22px)) rotate(calc(var(--r) + 6deg));
+    transform: translate(-50%, calc(-50% - 22px)) rotate(calc(var(--r) + 6deg)) scale(var(--s));
   }
+}
+
+/* one era of money at a time (Backdrop.tsx); the next one cross-fades in */
+.era-layer {
+  position: absolute;
+  inset: 0;
+}
+.era-in {
+  animation: era-in 1.6s ease-out both;
+}
+.era-out {
+  animation: era-out 1.6s ease-in both;
+}
+@keyframes era-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes era-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* museum label for the era, in the start gutter: from / to years stacked, its name under them */
+.era-caption {
+  display: none;
+  position: absolute;
+  inset-inline-start: 1.6%;
+  bottom: 4%;
+  max-width: 11ch;
+  color: var(--bd-word);
+  opacity: calc(var(--bd-money) * 1.3);
+  line-height: 1;
+  font-weight: 800;
+}
+/* only where the side gutter is wide enough to hold it beside the cards */
+@media (min-width: 1360px) {
+  .era-caption {
+    display: block;
+  }
+}
+.era-years {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(22px, 2.6vw, 48px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.era-name {
+  margin-top: 0.4em;
+  font-size: clamp(12px, 1.1vw, 17px);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 @media (prefers-reduced-motion: reduce) {
